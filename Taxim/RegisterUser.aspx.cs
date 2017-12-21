@@ -14,7 +14,7 @@ public partial class Test: System.Web.UI.Page
 
     protected void Button1_Click(object sender, EventArgs e)
     {
-        RegisterUser registerUser = new RegisterUser();
+        SqlConClass sqlConClass = new SqlConClass();
 
         string mail = Text1.Value;
         string phone = Text2.Value;
@@ -25,7 +25,7 @@ public partial class Test: System.Web.UI.Page
         string age = Text7.Value;
        
       
-        bool res = registerUser.registerUser(mail, phone, fname, lname, personal_info, pass, age);
+        bool res = sqlConClass.registerUser(mail, phone, fname, lname, personal_info, pass, age);
         Name.Text = mail;
     }
 }
