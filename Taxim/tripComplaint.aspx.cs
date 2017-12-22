@@ -22,7 +22,7 @@ public partial class GitDeneyenSayfa : System.Web.UI.Page
             Issue_id = Int32.Parse(TextBox6.Text);
         if (!TextBox7.Text.Equals(""))
             trip_ID = Int32.Parse(TextBox7.Text);
-
+        GridView1.DataSourceID = null;
         GridView1.DataSource = so.FilterComplaints(Issue_id, TextBox4.Text, TextBox5.Text, trip_ID);
         GridView1.DataBind();
     }

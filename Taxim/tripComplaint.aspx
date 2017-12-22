@@ -12,10 +12,10 @@
     
         <br />
         <br />
-        <asp:TextBox ID="TextBox6" runat="server" ForeColor="#999999">Issue ID</asp:TextBox>
-        <asp:TextBox ID="TextBox4" runat="server" ForeColor="#999999">Complaint</asp:TextBox>
-        <asp:TextBox ID="TextBox5" runat="server" ForeColor="#999999">Complainer Email</asp:TextBox>
-        <asp:TextBox ID="TextBox7" runat="server" ForeColor="#999999">Trip_id</asp:TextBox>
+        <asp:TextBox ID="TextBox6" runat="server" ForeColor="#999999"></asp:TextBox>
+        <asp:TextBox ID="TextBox4" runat="server" ForeColor="#999999"></asp:TextBox>
+        <asp:TextBox ID="TextBox5" runat="server" ForeColor="#999999"></asp:TextBox>
+        <asp:TextBox ID="TextBox7" runat="server" ForeColor="#999999"></asp:TextBox>
         <br />
         <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Search!" />
         <br />
