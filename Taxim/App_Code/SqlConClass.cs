@@ -351,9 +351,9 @@ public class SqlConClass
                 try
                 {
                     using (SqlCommand cmd = new SqlCommand("INSERT INTO Loc " +
-                        "values (@id, @x, @y, @name)"))
+                    "(CoordinateX, CoordinateY, Name) " +
+                        "values (@x, @y, @name)"))
                     {
-                        cmd.Parameters.AddWithValue("@id", i);
                         cmd.Parameters.AddWithValue("@x", rnd.Next(-20, 20));
                         cmd.Parameters.AddWithValue("@y", rnd.Next(-20, 20));
                         cmd.Parameters.AddWithValue("@name", locationNames[i]);
@@ -435,7 +435,19 @@ public class SqlConClass
                 }
             }
 
-
+            for(int i = 0; i < customerServiceFirstNames.Length; i++)
+            {
+                using (SqlCommand cmd = new SqlCommand("INSERT INTO Customer_Service " +
+                                "values (@e, @f, @l, @p"))
+                {
+                    cmd.Parameters.AddWithValue("@e", customerServiceFirstNames[i]+ customerServiceLastNames[i]+mailDomains[rnd.Next(mailDomains.Length)]);
+                    cmd.Parameters.AddWithValue("@f", customerServiceFirstNames[i]);
+                    cmd.Parameters.AddWithValue("@l", customerServiceLastNames[i]);
+                    cmd.Parameters.AddWithValue("@p", rnd.Next(1000, 1000000));
+                    cmd.Connection = con;
+                    cmd.ExecuteNonQuery();
+                }
+            }
 
 
             con.Close();
