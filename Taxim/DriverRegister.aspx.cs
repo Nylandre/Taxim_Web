@@ -14,8 +14,7 @@ public partial class DriverRegister : System.Web.UI.Page
 
     protected void Button1_Click(object sender, EventArgs e)
     {
-        RegisterUser registerUser = new RegisterUser();
-        RegisterDriver registerDriver = new RegisterDriver();
+        SqlConClass sqlConClass = new SqlConClass();
         string mail = Text1.Value;
         string phone = Text2.Value;
         string fname = Text3.Value;
@@ -25,8 +24,8 @@ public partial class DriverRegister : System.Web.UI.Page
         string age = Text7.Value;
 
 
-        bool res = registerUser.registerUser(mail, phone, fname, lname, personal_info, pass, age);
-        res = registerDriver.registerDriver(mail);
+        bool res = sqlConClass.registerUser(mail, phone, fname, lname, personal_info, pass, age); //first add as user
+        res = sqlConClass.registerDriver(mail); // then add as driver
 
         Name.Text = mail;
     }
