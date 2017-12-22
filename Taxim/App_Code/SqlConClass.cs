@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data.SqlClient;
+using System.Data;
 /// <summary>
 /// Summary description for Class1
 /// </summary>
@@ -157,6 +158,28 @@ public class SqlConClass
                 }
                 con.Close();
                 return true;
+            }
+        }
+    }
+    public DataTable login(string email, string password)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("select * from UserTable where E_Mail = @email and Pass = @pass"))
+            {
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Parameters.AddWithValue("@pass", password);
+                
+                cmd.Connection = con;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                DataTable dt = new DataTable();
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+                
+                con.Close();
+                return dt;
+                
             }
         }
     }
