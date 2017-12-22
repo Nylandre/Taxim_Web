@@ -21,7 +21,8 @@ public partial class Berke2 : System.Web.UI.Page
     {
         Label1.Text = "bastın";
         SqlConClass so = new SqlConClass();
-        String name = so.LabelDegistir(TextBox1.Text);
+        //so.populateDatabase();
+        string name = so.getTestModelName(TextBox1.Text);
         Label1.Text = name;
     }
 }
