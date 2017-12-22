@@ -109,4 +109,55 @@ public class SqlConClass
             }
         }
     }
+    public bool addModel(int capacity, char luxury, string model_name)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("INSERT INTO Model values (@capacity, @luxury, @model_name)"))
+            {
+                cmd.Parameters.AddWithValue("@capacity", capacity);
+                cmd.Parameters.AddWithValue("@luxury", luxury);
+                cmd.Parameters.AddWithValue("@model_name", model_name);
+
+                cmd.Connection = con;
+                con.Open();
+                string result = "";
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    //   while (dr.Read())
+                    //   {
+                    //       result = dr[0].ToString();
+                    //  }
+                }
+                con.Close();
+                return true;
+            }
+        }
+    }
+    public bool addCarToDriver(string model_name, string plate_number, string color, string driver_id)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("INSERT INTO Taxi values (@plate, @color, @driver_id, @model)"))
+            {
+                cmd.Parameters.AddWithValue("@plate", plate_number);
+                cmd.Parameters.AddWithValue("@driver_id", driver_id);
+                cmd.Parameters.AddWithValue("@model", model_name);
+                cmd.Parameters.AddWithValue("@color", color);
+
+                cmd.Connection = con;
+                con.Open();
+                string result = "";
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    //   while (dr.Read())
+                    //   {
+                    //       result = dr[0].ToString();
+                    //  }
+                }
+                con.Close();
+                return true;
+            }
+        }
+    }
 }
