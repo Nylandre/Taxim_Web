@@ -262,16 +262,36 @@ public class SqlConClass
             con.Open();
             //delete all rows from all tables..
             using (SqlCommand cmd = new SqlCommand(
-                "EXEC sp_MSForEachTable 'DISABLE TRIGGER ALL ON ?' GO " +
-                "EXEC sp_MSForEachTable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL' GO" +
-                "EXEC sp_MSForEachTable 'DELETE FROM ?' GO"+
-                "EXEC sp_MSForEachTable 'ALTER TABLE ? CHECK CONSTRAINT ALL' GO " +
-                "EXEC sp_MSForEachTable 'ENABLE TRIGGER ALL ON ?'  GO " ))
+                "EXEC sp_MSForEachTable 'DISABLE TRIGGER ALL ON ?'  " ))
             {
                 cmd.Connection = con;
                 cmd.ExecuteNonQuery();
             }
-
+            using (SqlCommand cmd = new SqlCommand(
+                "EXEC sp_MSForEachTable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'    "))
+            {
+                cmd.Connection = con;
+                cmd.ExecuteNonQuery();
+            }
+            using (SqlCommand cmd = new SqlCommand(
+                "EXEC sp_MSForEachTable 'DELETE FROM ?'   "))
+            {
+                cmd.Connection = con;
+                cmd.ExecuteNonQuery();
+            }
+            using (SqlCommand cmd = new SqlCommand(
+                "EXEC sp_MSForEachTable 'ALTER TABLE ? CHECK CONSTRAINT ALL'  "))
+            {
+                cmd.Connection = con;
+                cmd.ExecuteNonQuery();
+            }
+            using (SqlCommand cmd = new SqlCommand(
+                "EXEC sp_MSForEachTable 'ENABLE TRIGGER ALL ON ?'   "))
+            {
+                cmd.Connection = con;
+                cmd.ExecuteNonQuery();
+            }
+                
             //Initialize car models with random capacities and luxury models:
             foreach (String m in models)
             {
@@ -302,49 +322,6 @@ public class SqlConClass
             String[] userMails = new String[300];
             int riderCount = userMails.Length / 20 * 19;
 
-            //Initialize Users, Drivers and Customers
-            for (int i = 0; i < userMails.Length; i++)
-            {
-                string fname = UserFirstNames[rnd.Next(UserFirstNames.Length)];
-                string lname = UserFirstNames[rnd.Next(UserLastNames.Length)];
-                string email = lname + fname + i + mailDomains[rnd.Next(mailDomains.Length)];
-                using (SqlCommand cmd = new SqlCommand("INSERT INTO UserTable" +
-                    "(E_Mail, Phone_Number, FirstName, LastName, Pass) " +
-                    "values (@E_Mail, @PH, @FN, @LN, @Pass)"))
-                {
-                    cmd.Parameters.AddWithValue("@E_Mail", email);
-                    cmd.Parameters.AddWithValue("@PH", (""+i).PadLeft(15,'0'));
-                    cmd.Parameters.AddWithValue("@FN", fname);
-                    cmd.Parameters.AddWithValue("@LN", lname);
-                    cmd.Parameters.AddWithValue("@Pass", rnd.Next(1000,1000000));
-                    cmd.Connection = con;
-                    cmd.ExecuteNonQuery();
-                }
-                if (i < riderCount)
-                {
-                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Customer" +
-                    "values (@E_Mail)"))
-                    {
-                        cmd.Parameters.AddWithValue("@E_Mail", email);
-                        cmd.Connection = con;
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-                else
-                {
-                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Driver" +
-                    "values (@E_Mail, @Location, TRUE)"))
-                    {
-                        //Drivers start in a random location with available info
-                        cmd.Parameters.AddWithValue("@E_Mail", email);
-                        cmd.Parameters.AddWithValue("@Location", rnd.Next(locationNames.Length));
-                        cmd.Connection = con;
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-                userMails[i] = email;
-            }
-
             //Initialize Locations
             for (int i = 0; i < locationNames.Length; i++)
             {
@@ -368,6 +345,51 @@ public class SqlConClass
                         i--;
                 }
             }
+
+            //Initialize Users, Drivers and Customers
+            for (int i = 0; i < userMails.Length; i++)
+            {
+                string fname = UserFirstNames[rnd.Next(UserFirstNames.Length)];
+                string lname = UserLastNames[rnd.Next(UserLastNames.Length)];
+                string email = lname + fname + i + mailDomains[rnd.Next(mailDomains.Length)];
+                using (SqlCommand cmd = new SqlCommand("INSERT INTO UserTable" +
+                    "(E_Mail, Phone_Number, FirstName, LastName, Pass) " +
+                    "values (@E_Mail, @PH, @FN, @LN, @Pass)"))
+                {
+                    cmd.Parameters.AddWithValue("@E_Mail", email);
+                    cmd.Parameters.AddWithValue("@PH", (""+i).PadLeft(15,'0'));
+                    cmd.Parameters.AddWithValue("@FN", fname);
+                    cmd.Parameters.AddWithValue("@LN", lname);
+                    cmd.Parameters.AddWithValue("@Pass", rnd.Next(1000,1000000));
+                    cmd.Connection = con;
+                    cmd.ExecuteNonQuery();
+                }
+                if (i < riderCount)
+                {
+                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Customer " +
+                    " VALUES (@E_Mail)"))
+                    {
+                        cmd.Parameters.AddWithValue("@E_Mail", email);
+                        cmd.Connection = con;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                else
+                {
+                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Driver " +
+                    "values (@E_Mail, @Location, 'TRUE')"))
+                    {
+                        //Drivers start in a random location with available info
+                        cmd.Parameters.AddWithValue("@E_Mail", email);
+                        cmd.Parameters.AddWithValue("@Location", rnd.Next(locationNames.Length));
+                        cmd.Connection = con;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                userMails[i] = email;
+            }
+
+            
 
             //Initialize language knows table, credit card table
             foreach (String email in userMails)
@@ -434,7 +456,7 @@ public class SqlConClass
                         i--;
                 }
             }
-
+            //initialize customer service
             for(int i = 0; i < customerServiceFirstNames.Length; i++)
             {
                 using (SqlCommand cmd = new SqlCommand("INSERT INTO Customer_Service " +
