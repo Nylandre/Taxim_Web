@@ -60,7 +60,7 @@ public class SqlConClass
     public string FilterUsers(string firstname, string Lastname,  int? PhoneNumber,  string personelinfo ,string email)
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
-        {
+        {//Does not work do not why yet!!
             using (SqlCommand cmd = new SqlCommand("sp_user_Filter @firstname,@Lastname,@PhoneNumber,@personelinfo,@email"))
             {
                 cmd.Parameters.AddWithValue("@firstname", firstname ?? Convert.DBNull);
