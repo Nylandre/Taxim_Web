@@ -7,11 +7,11 @@
     <title></title>
     <style type="text/css">
         #form1 {
-            height: 256px;
+            height: 443px;
         }
     </style>
 </head>
-<body style="height: 275px">
+<body style="height: 462px">
     <form id="form1" runat="server">
         <div>
         </div>
@@ -46,8 +46,9 @@
             <asp:TextBox ID="TextBox4" runat="server" Enabled="False" TextMode="Number">30</asp:TextBox>
         </p>
         <p>
-            <asp:Button ID="Button1" runat="server" Text="Call the Taxi!" />
+            <asp:Button ID="Button1" runat="server" Text="Call the Taxi!" OnClick="Button1_Click" />
         </p>
+        <asp:Label ID="Label5" runat="server"></asp:Label>
     </form>
     </body>
 </html>

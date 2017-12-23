@@ -478,4 +478,22 @@ public class SqlConClass
         }
 
     }
+
+
+    public int createTrip(string paymentMethod, Boolean choose, Boolean noOtherRider,
+        int minuteOffset, char Luxury, string capacity)
+    {
+        int[] locationIDS = 
+            
+        using (SqlCommand cmd = new SqlCommand("INSERT INTO Customer_Service " +
+                                "values (@e, @f, @l, @p)"))
+        {
+            cmd.Parameters.AddWithValue("@e", customerServiceFirstNames[i] + customerServiceLastNames[i] + mailDomains[rnd.Next(mailDomains.Length)]);
+            cmd.Parameters.AddWithValue("@f", customerServiceFirstNames[i]);
+            cmd.Parameters.AddWithValue("@l", customerServiceLastNames[i]);
+            cmd.Parameters.AddWithValue("@p", rnd.Next(1000, 1000000));
+            cmd.Connection = con;
+            cmd.ExecuteNonQuery();
+        }
+    }
 }

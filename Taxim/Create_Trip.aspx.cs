@@ -24,25 +24,17 @@ public partial class Create_Trip : System.Web.UI.Page
             CheckBox2.Enabled = true;
     }
 
-
-    protected void TextBox3_TextChanged(object sender, EventArgs e)
-    {
-
-    }
-
-    protected void TextBox2_TextChanged(object sender, EventArgs e)
-    {
-
-    }
-
-    protected void TextBox4_TextChanged(object sender, EventArgs e)
-    {
-
-    }
-
+    
     protected void RadioButtonList1_SelectedIndexChanged(object sender, EventArgs e)
     {
         TextBox4.Enabled = !RadioButtonList1.SelectedValue.Equals(RadioButtonList1.Items[0]);
         //if user chooses to order taxi now, textbox gets disabled
+    }
+
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        string[] destinationPoints = TextBox2.Text.Split(new char[]{ '\n'});
+        SqlConClass s = new SqlConClass();
+        Label5.Text = "Maximum estimated price is: " + s.createTrip();
     }
 }
