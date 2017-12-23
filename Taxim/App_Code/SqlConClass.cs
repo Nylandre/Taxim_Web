@@ -127,14 +127,7 @@ public class SqlConClass : System.Web.Services.WebService
 
                 cmd.Connection = con;
                 con.Open();
-                string result = "";
-                using (SqlDataReader dr = cmd.ExecuteReader())
-                {
-                    //   while (dr.Read())
-                    //   {
-                    //       result = dr[0].ToString();
-                    //  }
-                }
+                cmd.ExecuteNonQuery();
                 con.Close();
                 return true;
             }
@@ -151,14 +144,7 @@ public class SqlConClass : System.Web.Services.WebService
 
                 cmd.Connection = con;
                 con.Open();
-                string result = "";
-                using (SqlDataReader dr = cmd.ExecuteReader())
-                {
-                    //   while (dr.Read())
-                    //   {
-                    //       result = dr[0].ToString();
-                    //  }
-                }
+                cmd.ExecuteNonQuery();
                 con.Close();
                 return true;
             }
@@ -176,14 +162,7 @@ public class SqlConClass : System.Web.Services.WebService
 
                 cmd.Connection = con;
                 con.Open();
-                string result = "";
-                using (SqlDataReader dr = cmd.ExecuteReader())
-                {
-                    //   while (dr.Read())
-                    //   {
-                    //       result = dr[0].ToString();
-                    //  }
-                }
+                cmd.ExecuteNonQuery();
                 con.Close();
                 return true;
             }
@@ -202,14 +181,7 @@ public class SqlConClass : System.Web.Services.WebService
 
                 cmd.Connection = con;
                 con.Open();
-                string result = "";
-                using (SqlDataReader dr = cmd.ExecuteReader())
-                {
-                    //   while (dr.Read())
-                    //   {
-                    //       result = dr[0].ToString();
-                    //  }
-                }
+                cmd.ExecuteNonQuery();
                 con.Close();
                 return true;
             }
@@ -229,14 +201,7 @@ public class SqlConClass : System.Web.Services.WebService
 
                 cmd.Connection = con;
                 con.Open();
-                string result = "";
-                using (SqlDataReader dr = cmd.ExecuteReader())
-                {
-                    //   while (dr.Read())
-                    //   {
-                    //       result = dr[0].ToString();
-                    //  }
-                }
+                cmd.ExecuteNonQuery();
                 con.Close();
                 return true;
             }
@@ -253,14 +218,7 @@ public class SqlConClass : System.Web.Services.WebService
                 cmd.Parameters.AddWithValue("@plate", plate_number);
                 cmd.Connection = con;
                 con.Open();
-                string result = "";
-                using (SqlDataReader dr = cmd.ExecuteReader())
-                {
-                    //   while (dr.Read())
-                    //   {
-                    //       result = dr[0].ToString();
-                    //  }
-                }
+                cmd.ExecuteNonQuery();
                 con.Close();
                 return true;
             }
@@ -512,7 +470,7 @@ public class SqlConClass : System.Web.Services.WebService
             }
 
             //initializes taxis for drivers
-            Console.WriteLine(riderCount + " " + userMails.Length);
+            System.Diagnostics.Debug.WriteLine(riderCount + " " + userMails.Length);
             for(int i = riderCount; i < userMails.Length; i++)
             {
                 try
@@ -562,6 +520,7 @@ public class SqlConClass : System.Web.Services.WebService
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {
+            con.Open();
             int[] locationIDS = new int[destinations.Length + 1];
             int totalDistance = 0;
             try
@@ -570,8 +529,11 @@ public class SqlConClass : System.Web.Services.WebService
                 {
                     cmd.Parameters.AddWithValue("@startP", startPoint);
                     cmd.Parameters.AddWithValue("@endP", destinations[0]);
+                    System.Diagnostics.Debug.WriteLine(cmd.ToString());
                     cmd.Connection = con;
                     SqlDataReader dr = cmd.ExecuteReader();
+                    System.Diagnostics.Debug.WriteLine(dr.ToString());
+                    dr.Read();
                     locationIDS[0] = dr.GetInt32(0);
                     locationIDS[1] = dr.GetInt32(1);
                     totalDistance+= dr.GetInt32(2);
@@ -585,15 +547,17 @@ public class SqlConClass : System.Web.Services.WebService
                         cmd.Parameters.AddWithValue("@endP", destinations[i + 1]);
                         cmd.Connection = con;
                         SqlDataReader dr = cmd.ExecuteReader();
+                        dr.Read();
                         locationIDS[i + 1] = dr.GetInt32(0);
                         locationIDS[i + 2] = dr.GetInt32(1);
+                        totalDistance += dr.GetInt32(2);
                         dr.Close();
                     }
                 }
             }
             catch(SqlException E)
             {
-                Console.WriteLine(E.ErrorCode);
+                System.Diagnostics.Debug.WriteLine(E.ErrorCode);
                 return -1;
                 //location error
             }
@@ -606,7 +570,7 @@ public class SqlConClass : System.Web.Services.WebService
                 cmd.Parameters.AddWithValue("@pT", SqlDbType.Char).Value= paymentMethod.ToCharArray()[1];
                 cmd.Parameters.AddWithValue("@cD", SqlDbType.Bit).Value = choose;
                 cmd.Parameters.AddWithValue("@sD", SqlDbType.DateTime).Value = DateTime.Now.AddMinutes(minuteOffset);
-                cmd.Parameters.AddWithValue("@rID", Session["E_Mail"]);
+                cmd.Parameters.AddWithValue("@rID", /*Session["E_Mail"]*/"AnarrAmon271@vahiymail.com");
                 cmd.Connection = con;
                 cmd.ExecuteNonQuery();
             }
@@ -614,21 +578,22 @@ public class SqlConClass : System.Web.Services.WebService
             try
             {
                 using (SqlCommand cmd = new SqlCommand
-                   ("SELECT SCOPE_IDENTITY()"))
+                   ("SELECT @@IDENTITY"))
                 {
                     cmd.Connection = con;
                     SqlDataReader dr = cmd.ExecuteReader();
+                    dr.Read();
                     tripID = dr[0].ToString();
                     dr.Close();
                 }
             }
             catch
             {
-                Console.WriteLine("error finding the trip id");
+                System.Diagnostics.Debug.WriteLine("error finding the trip id");
                 return -2;
                 //trip id finding error
             }
-
+            System.Diagnostics.Debug.WriteLine(tripID);
             using (SqlCommand cmd = new SqlCommand
                 ("INSERT INTO Trip_Features (trip_id, Capacity," + "Luxury, No_Other_Rider) " +
                                     "values (@id, @cap, @lux, @noOther)"))
@@ -643,7 +608,7 @@ public class SqlConClass : System.Web.Services.WebService
 
             for (int i = 0; i < locationIDS.Length; i++)
             {
-                using (SqlCommand cmd = new SqlCommand("INSERT INTO Requested_Destinaitons " +
+                using (SqlCommand cmd = new SqlCommand("INSERT INTO Requested_Destinations " +
                                     "values (@tripID, @locID, @order)"))
                 {
                     cmd.Parameters.AddWithValue("@tripID", tripID);
@@ -653,6 +618,7 @@ public class SqlConClass : System.Web.Services.WebService
                     cmd.ExecuteNonQuery();
                 }
             }
+            con.Close();
             int coefficient = 1;
             if (Luxury == 'L')
                 coefficient = 3;
