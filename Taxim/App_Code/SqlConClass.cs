@@ -558,19 +558,109 @@ public class SqlConClass : System.Web.Services.WebService
 
 
     public int createTrip(string paymentMethod, Boolean choose, Boolean noOtherRider,
-        int minuteOffset, char Luxury, string capacity)
+        int minuteOffset, char Luxury, string capacity, string startPoint, string[] destinations)
     {
-        int[] locationIDS = 
-            
-        using (SqlCommand cmd = new SqlCommand("INSERT INTO Customer_Service " +
-                                "values (@e, @f, @l, @p)"))
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {
-            cmd.Parameters.AddWithValue("@e", customerServiceFirstNames[i] + customerServiceLastNames[i] + mailDomains[rnd.Next(mailDomains.Length)]);
-            cmd.Parameters.AddWithValue("@f", customerServiceFirstNames[i]);
-            cmd.Parameters.AddWithValue("@l", customerServiceLastNames[i]);
-            cmd.Parameters.AddWithValue("@p", rnd.Next(1000, 1000000));
-            cmd.Connection = con;
-            cmd.ExecuteNonQuery();
+            int[] locationIDS = new int[destinations.Length + 1];
+            int totalDistance = 0;
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("getLocationIDs @startP, @endP"))
+                {
+                    cmd.Parameters.AddWithValue("@startP", startPoint);
+                    cmd.Parameters.AddWithValue("@endP", destinations[0]);
+                    cmd.Connection = con;
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    locationIDS[0] = dr.GetInt32(0);
+                    locationIDS[1] = dr.GetInt32(1);
+                    totalDistance+= dr.GetInt32(2);
+                    dr.Close();
+                }
+                for (int i = 0; i < destinations.Length - 1; i++)
+                {
+                    using (SqlCommand cmd = new SqlCommand("getLocationIDs @startP, @endP"))
+                    {
+                        cmd.Parameters.AddWithValue("@startP", destinations[i]);
+                        cmd.Parameters.AddWithValue("@endP", destinations[i + 1]);
+                        cmd.Connection = con;
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        locationIDS[i + 1] = dr.GetInt32(0);
+                        locationIDS[i + 2] = dr.GetInt32(1);
+                        dr.Close();
+                    }
+                }
+            }
+            catch(SqlException E)
+            {
+                Console.WriteLine(E.ErrorCode);
+                return -1;
+                //location error
+            }
+            
+
+            using (SqlCommand cmd = new SqlCommand
+                ("INSERT INTO Trip (Payment_Type, Choose_Driver_Automatically," + "Requested_Start_Date, requester_id) " +
+                                    "values (@pT, @cD, @sD, @rID)"))
+            {
+                cmd.Parameters.AddWithValue("@pT", SqlDbType.Char).Value= paymentMethod.ToCharArray()[1];
+                cmd.Parameters.AddWithValue("@cD", SqlDbType.Bit).Value = choose;
+                cmd.Parameters.AddWithValue("@sD", SqlDbType.DateTime).Value = DateTime.Now.AddMinutes(minuteOffset);
+                cmd.Parameters.AddWithValue("@rID", Session["E_Mail"]);
+                cmd.Connection = con;
+                cmd.ExecuteNonQuery();
+            }
+            string tripID = "";
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand
+                   ("SELECT SCOPE_IDENTITY()"))
+                {
+                    cmd.Connection = con;
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    tripID = dr[0].ToString();
+                    dr.Close();
+                }
+            }
+            catch
+            {
+                Console.WriteLine("error finding the trip id");
+                return -2;
+                //trip id finding error
+            }
+
+            using (SqlCommand cmd = new SqlCommand
+                ("INSERT INTO Trip_Features (trip_id, Capacity," + "Luxury, No_Other_Rider) " +
+                                    "values (@id, @cap, @lux, @noOther)"))
+            {
+                cmd.Parameters.AddWithValue("@id", tripID);
+                cmd.Parameters.AddWithValue("@cap", capacity);
+                cmd.Parameters.AddWithValue("@lux", SqlDbType.Char).Value = Luxury;
+                cmd.Parameters.AddWithValue("@noOther", SqlDbType.Bit).Value = noOtherRider;
+                cmd.Connection = con;
+                cmd.ExecuteNonQuery();
+            }
+
+            for (int i = 0; i < locationIDS.Length; i++)
+            {
+                using (SqlCommand cmd = new SqlCommand("INSERT INTO Requested_Destinaitons " +
+                                    "values (@tripID, @locID, @order)"))
+                {
+                    cmd.Parameters.AddWithValue("@tripID", tripID);
+                    cmd.Parameters.AddWithValue("@locID", locationIDS[i]);
+                    cmd.Parameters.AddWithValue("@order", i);
+                    cmd.Connection = con;
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            int coefficient = 1;
+            if (Luxury == 'L')
+                coefficient = 3;
+            else if (Luxury == 'Q')
+                coefficient = 2;
+            if (noOtherRider)
+                return (int)(totalDistance * coefficient * 0.75);
+            else return totalDistance * coefficient;
         }
     }
 }
