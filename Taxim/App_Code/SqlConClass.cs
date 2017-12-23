@@ -77,6 +77,59 @@ public class SqlConClass : System.Web.Services.WebService
             }
         }
     }
+
+    public DataTable FilterUserTrips(string email)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("SELECT [Merged_Trip_ID], [Start_Time], [End_Time], [Plate_Number], [Rating], [Comment] FROM [Merged_Trip] WHERE ([Rating] IS NOT NULL) and  Merged_Trip_ID in (SELECT Merged_Trip_ID from Passenger where E_Mail = @email)"))
+            {
+                cmd.Parameters.AddWithValue("@email", email);
+
+                cmd.Connection = con;
+                con.Open();
+                
+                
+                using (SqlDataAdapter sda = new SqlDataAdapter())
+                {
+                    cmd.Connection = con;
+                    sda.SelectCommand = cmd;
+                    using (DataTable dt = new DataTable())
+                    {
+                        dt.TableName = "UserTrips";
+                        sda.Fill(dt);
+                        return dt;
+                    }
+                }
+                
+            }
+        }
+    }
+
+    public void RateDriver (int mergedTripID, int rating, string comment)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("UPDATE Passenger SET Rating = @rating, Comment= @comment WHERE Merged_Trip_ID = @mergedTripID; "))
+            {
+                cmd.Parameters.AddWithValue("@rating", rating);
+                cmd.Parameters.AddWithValue("@comment", comment);
+                cmd.Parameters.AddWithValue("@mergedTripID", mergedTripID);
+                cmd.Connection = con;
+                con.Open();
+                string result = "";
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        result = dr[0].ToString();
+                    }
+                }
+                con.Close();
+            }
+        }
+    }
+
     [System.Web.Services.WebMethod(BufferResponse = true)]
     public void RateRider(int mergedTripID, int rating, string comment)
     {
@@ -357,11 +410,39 @@ public class SqlConClass : System.Web.Services.WebService
     }
 
     [System.Web.Services.WebMethod(BufferResponse = true)]
+    public DataTable showAcceptedDrivers(string email)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("select Loc.Name,E_Mail,UserTable.Phone_Number,UserTable.Age from Accept join Requested_Destinations on Requested_Destinations.trip_id = Accept.trip_id join Loc on Loc.Location_ID = Requested_Destinations.Location_ID where Accept.trip_id in (select Passenger.trip_id from Passenger where E_mail = @email ) and E_Mail in (select E_Mail from UserTable)"))
+            {
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Connection = con;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+                
+                using (SqlDataAdapter sda = new SqlDataAdapter())
+                {
+                    cmd.Connection = con;
+                    sda.SelectCommand = cmd;
+                    using (DataTable dt = new DataTable())
+                    {
+                        dt.TableName = "Accepted Drivers";
+                        sda.Fill(dt);
+                        return dt;
+                    }
+                }
+            }
+        }
+    }
+
+    [System.Web.Services.WebMethod(BufferResponse = true)]
     public DataTable loginCustomer(string email, string password)
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {
-            using (SqlCommand cmd = new SqlCommand("select * from UserTable NATURAL JOIN Customer where E_Mail = @email and Pass = @pass"))
+            using (SqlCommand cmd = new SqlCommand("SELECT * FROM UserTable JOIN Customer ON UserTable.E_Mail = Customer.E_Mail WHERE Customer.E_Mail = @email and Pass = @pass "))
             {
                 cmd.Parameters.AddWithValue("@email", email);
                 cmd.Parameters.AddWithValue("@pass", password);
