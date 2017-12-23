@@ -37,8 +37,14 @@
 			</asp:DropDownList>
 		</p>
 		<asp:Label ID="Label3" runat="server" Text="Model_Name"></asp:Label>
-		<input id="Text3" type="text" runat="server"/><p>
-			&nbsp;</p>
+		<input id="Text3" type="text" runat="server"/><br />
+        <br />
+        <asp:Label ID="Label5" runat="server" Text="Licence Plate"></asp:Label>
+        <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+        <p>
+			Total km&nbsp;&nbsp;&nbsp;
+            <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
+        </p>
 		<asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Save Car Model" />
     	<p>
 			<asp:Label ID="Label4" runat="server" Text="Label"></asp:Label>

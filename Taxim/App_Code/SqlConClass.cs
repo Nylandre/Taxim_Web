@@ -57,7 +57,7 @@ public class SqlConClass
             }
         }
     }
-    public string FilterUsers(string firstname, string Lastname,  int? PhoneNumber,  string personelinfo ,string email)
+    public string FilterUsers(string firstname, string Lastname, string PhoneNumber,  string personelinfo ,string email)
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {//Does not work do not why yet!!
@@ -67,7 +67,7 @@ public class SqlConClass
                 cmd.Parameters.AddWithValue("@Lastname", Lastname ?? Convert.DBNull);
                 cmd.Parameters.AddWithValue("@personelinfo", personelinfo ?? Convert.DBNull);
                 cmd.Parameters.AddWithValue("@email", email ?? Convert.DBNull);
-                cmd.Parameters.AddWithValue("@PhoneNumber", (PhoneNumber == null) ? Convert.DBNull : PhoneNumber);
+                cmd.Parameters.AddWithValue("@PhoneNumber", PhoneNumber ?? Convert.DBNull);
 
                 cmd.Connection = con;
                 con.Open();

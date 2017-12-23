@@ -20,10 +20,6 @@ public partial class Default2 : System.Web.UI.Page
 
     protected void Login1_Authenticate(object sender, AuthenticateEventArgs e)
     {
-        SqlOperations so = new SqlOperations();
-        String bookName = Login1.UserName;
-        String author = so.asd(bookName);
-        Label1.Text = author;
 
     }
     public class SqlOperations : System.Web.Services.WebService
@@ -53,14 +49,5 @@ public partial class Default2 : System.Web.UI.Page
         }
 
     }
-
-    protected void Button1_Click(object sender, EventArgs e)
-    {
-        Response.Redirect("BoluBeyi.aspx");
-    }
-
-    protected void Button2_Click(object sender, EventArgs e)
-    {
-        Label1.Text = "seks";
-    }
+    
 }
