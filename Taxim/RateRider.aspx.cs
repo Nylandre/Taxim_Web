@@ -10,7 +10,7 @@ public partial class RateRider : System.Web.UI.Page
     int MergetripId; //This should come from the page before 
     protected void Page_Load(object sender, EventArgs e)
     {
-        //Initiliza mergetripid here ? or it will come assigned directly from the otehr page
+        //Initiliza mergetripid here ? or it will come assigned directly from the other page
     }
     protected void Button1_Click(object sender, EventArgs e)
     {

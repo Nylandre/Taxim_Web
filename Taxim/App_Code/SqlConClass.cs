@@ -595,6 +595,7 @@ public class SqlConClass : System.Web.Services.WebService
                     cmd.Parameters.AddWithValue("@startP", startPoint);
                     cmd.Parameters.AddWithValue("@endP", destinations[0]);
                     cmd.Connection = con;
+                    con.Open();
                     SqlDataReader dr = cmd.ExecuteReader();
                     locationIDS[0] = dr.GetInt32(0);
                     locationIDS[1] = dr.GetInt32(1);
@@ -667,7 +668,7 @@ public class SqlConClass : System.Web.Services.WebService
 
             for (int i = 0; i < locationIDS.Length; i++)
             {
-                using (SqlCommand cmd = new SqlCommand("INSERT INTO Requested_Destinaitons " +
+                using (SqlCommand cmd = new SqlCommand("INSERT INTO Requested_Destinations " +
                                     "values (@tripID, @locID, @order)"))
                 {
                     cmd.Parameters.AddWithValue("@tripID", tripID);
