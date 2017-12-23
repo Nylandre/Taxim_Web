@@ -105,8 +105,30 @@ public class SqlConClass : System.Web.Services.WebService
             }
         }
     }
-        
-    
+
+    public void RateDriver (int mergedTripID, int rating, string comment)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("UPDATE Passenger SET Rating = @rating, Comment= @comment WHERE Merged_Trip_ID = @mergedTripID; "))
+            {
+                cmd.Parameters.AddWithValue("@rating", rating);
+                cmd.Parameters.AddWithValue("@comment", comment);
+                cmd.Parameters.AddWithValue("@mergedTripID", mergedTripID);
+                cmd.Connection = con;
+                con.Open();
+                string result = "";
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        result = dr[0].ToString();
+                    }
+                }
+                con.Close();
+            }
+        }
+    }
 
     [System.Web.Services.WebMethod(BufferResponse = true)]
     public void RateRider(int mergedTripID, int rating, string comment)
