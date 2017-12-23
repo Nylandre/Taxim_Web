@@ -7,7 +7,7 @@ using System.Data;
 /// <summary>
 /// Summary description for Class1
 /// </summary>
-public class SqlConClass
+public class SqlConClass : System.Web.Services.WebService
 {
     [System.Web.Services.WebMethod(BufferResponse = true)]
     public string LabelDegistir(string name)
@@ -32,6 +32,7 @@ public class SqlConClass
             }
         }
     }
+    [System.Web.Services.WebMethod(BufferResponse = true)]
     public string FilterComplaints(int? Issue_id,string complaint,string complainerEmail,int? trip_ID)
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
@@ -57,36 +58,61 @@ public class SqlConClass
             }
         }
     }
-    public string FilterUsers(string firstname, string Lastname,  int? PhoneNumber,  string personelinfo ,string email)
+    [System.Web.Services.WebMethod(BufferResponse = true)]
+    public DataTable FilterUsers(string firstname, string Lastname, string PhoneNumber,  string personelinfo ,string email)
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {//Does not work do not why yet!!
-            using (SqlCommand cmd = new SqlCommand("sp_user_Filter @firstname,@Lastname,@PhoneNumber,@personelinfo,@email"))
+            using (SqlCommand cmd = new SqlCommand("sp_Rider_Filter @firstname,@Lastname,@PhoneNumber,@personelinfo,@email"))
             {
-                cmd.Parameters.AddWithValue("@firstname", firstname ?? Convert.DBNull);
-                cmd.Parameters.AddWithValue("@Lastname", Lastname ?? Convert.DBNull);
-                cmd.Parameters.AddWithValue("@personelinfo", personelinfo ?? Convert.DBNull);
-                cmd.Parameters.AddWithValue("@email", email ?? Convert.DBNull);
-                cmd.Parameters.AddWithValue("@PhoneNumber", (PhoneNumber == null) ? Convert.DBNull : PhoneNumber);
+                cmd.Parameters.AddWithValue("@firstname", (firstname == null || firstname.Equals("")) ? Convert.DBNull: firstname);
+                cmd.Parameters.AddWithValue("@Lastname", (Lastname == null || Lastname.Equals("")) ? Convert.DBNull : Lastname);
+                cmd.Parameters.AddWithValue("@personelinfo", (personelinfo == null || personelinfo.Equals("")) ? Convert.DBNull : personelinfo);
+                cmd.Parameters.AddWithValue("@email", (email == null || email.Equals("")) ? Convert.DBNull : email);
+                cmd.Parameters.AddWithValue("@PhoneNumber", (PhoneNumber == null || PhoneNumber.Equals("")) ? Convert.DBNull : PhoneNumber);
 
-                cmd.Connection = con;
-                con.Open();
-                string result = "";
-                using (SqlDataReader dr = cmd.ExecuteReader())
+                using (SqlDataAdapter sda = new SqlDataAdapter())
                 {
-                    while (dr.Read())
+                    cmd.Connection = con;
+                    sda.SelectCommand = cmd;
+                    using (DataTable dt = new DataTable())
                     {
-                        result = dr[0].ToString();
+                        dt.TableName = "Rider";
+                        sda.Fill(dt);
+                        return dt;
                     }
                 }
-                con.Close();
-                return result;
             }
         }
     }
+    [System.Web.Services.WebMethod(BufferResponse = true)]
+    public DataTable FilterDrivers(int? Available,int? Loc, string email)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {//Does not work do not why yet!!
+            using (SqlCommand cmd = new SqlCommand("sp_driver_Filter @Availability = @available, @Current_location = @Loc,@E_Mail = @email"))
+            {
+                cmd.Parameters.AddWithValue("@Loc", Loc ?? Convert.DBNull);
+                cmd.Parameters.AddWithValue("@email", (email == null || email.Equals("")) ? Convert.DBNull : email);
+                cmd.Parameters.AddWithValue("@available", Available ?? Convert.DBNull);
+                
+                using (SqlDataAdapter sda = new SqlDataAdapter())
+                {
+                    cmd.Connection = con;
+                    sda.SelectCommand = cmd;
+                    using (DataTable dt = new DataTable())
+                    {
+                        dt.TableName = "Driver";
+                        sda.Fill(dt);
+                        return dt;
+                    }
+                }
+            }
+        }
+    }
+    [System.Web.Services.WebMethod(BufferResponse = true)]
     public bool registerUser(string e_mail, string phone, string fname, string lname, string ps_info, string pass, string age)
     {
-        
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {
             using (SqlCommand cmd = new SqlCommand("INSERT INTO UserTable(E_mail,Phone_Number,FirstName,LastName,Personal_Info,Pass,Age) values ( @e_mail ,@phone , @fname , @lname , @ps_info , @pass , @age )"))
@@ -114,6 +140,7 @@ public class SqlConClass
             }
         }
     }
+    [System.Web.Services.WebMethod(BufferResponse = true)]
     public bool registerDriver(string e_mail)
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
@@ -137,6 +164,32 @@ public class SqlConClass
             }
         }
     }
+
+    [System.Web.Services.WebMethod(BufferResponse = true)]
+    public bool registerCustomer(string e_mail)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("INSERT INTO Customer(E_Mail) values (@e_mail)"))
+            {
+                cmd.Parameters.AddWithValue("@e_mail", e_mail);
+
+                cmd.Connection = con;
+                con.Open();
+                string result = "";
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    //   while (dr.Read())
+                    //   {
+                    //       result = dr[0].ToString();
+                    //  }
+                }
+                con.Close();
+                return true;
+            }
+        }
+    }
+    [System.Web.Services.WebMethod(BufferResponse = true)]
     public bool addModel(int capacity, char luxury, string model_name)
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
@@ -162,6 +215,7 @@ public class SqlConClass
             }
         }
     }
+    [System.Web.Services.WebMethod(BufferResponse = true)]
     public bool addCarToDriver(string model_name, string plate_number, string color, string driver_id)
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
@@ -188,6 +242,32 @@ public class SqlConClass
             }
         }
     }
+
+    [System.Web.Services.WebMethod(BufferResponse = true)]
+    public bool deleteCarFromDriver(string plate_number)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("DELETE FROM Taxi WHERE plate_Number = "))
+            {
+                cmd.Parameters.AddWithValue("@plate", plate_number);
+                cmd.Connection = con;
+                con.Open();
+                string result = "";
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    //   while (dr.Read())
+                    //   {
+                    //       result = dr[0].ToString();
+                    //  }
+                }
+                con.Close();
+                return true;
+            }
+        }
+    }
+
+    [System.Web.Services.WebMethod(BufferResponse = true)]
     public DataTable login(string email, string password)
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
@@ -388,9 +468,6 @@ public class SqlConClass
                 }
                 userMails[i] = email;
             }
-
-            
-
             //Initialize language knows table, credit card table
             foreach (String email in userMails)
             {

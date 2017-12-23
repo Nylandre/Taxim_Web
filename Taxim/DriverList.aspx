@@ -10,6 +10,24 @@
     <form id="form1" runat="server">
     <div>
     
+        <br />
+        <asp:CheckBox ID="CheckBox1" runat="server" Text="Available" />
+        <asp:TextBox ID="TextBox7" runat="server"></asp:TextBox>
+        <asp:TextBox ID="TextBox8" runat="server"></asp:TextBox>
+        <br />
+        <asp:Button ID="Button1" runat="server" Text="Search" OnClick="Button1_Click" />
+        <br />
+        <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
+        <br />
+        <asp:GridView ID="GridView2" runat="server">
+        </asp:GridView>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    
     </div>
     </form>
 </body>

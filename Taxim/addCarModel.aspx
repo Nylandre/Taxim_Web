@@ -37,8 +37,8 @@
 			</asp:DropDownList>
 		</p>
 		<asp:Label ID="Label3" runat="server" Text="Model_Name"></asp:Label>
-		<input id="Text3" type="text" runat="server"/><p>
-			&nbsp;</p>
+		<input id="Text3" type="text" runat="server"/><br />
+        <br />
 		<asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Save Car Model" />
     	<p>
 			<asp:Label ID="Label4" runat="server" Text="Label"></asp:Label>
