@@ -325,7 +325,7 @@ public class SqlConClass
             //Initialize Locations
             for (int i = 0; i < locationNames.Length; i++)
             {
-                try
+                //try
                 {
                     using (SqlCommand cmd = new SqlCommand("INSERT INTO Loc " +
                     "(CoordinateX, CoordinateY, Name) " +
@@ -339,11 +339,11 @@ public class SqlConClass
                     }
                 }
                 //if a randomized item conflicts, creates with random values again
-                catch (SqlException e)
+                /*catch (SqlException e)
                 {
                     if (e.Number == 2601)
                         i--;
-                }
+                }*/
             }
 
             //Initialize Users, Drivers and Customers
@@ -381,7 +381,7 @@ public class SqlConClass
                     {
                         //Drivers start in a random location with available info
                         cmd.Parameters.AddWithValue("@E_Mail", email);
-                        cmd.Parameters.AddWithValue("@Location", rnd.Next(locationNames.Length));
+                        cmd.Parameters.AddWithValue("@Location", 181+rnd.Next(locationNames.Length));
                         cmd.Connection = con;
                         cmd.ExecuteNonQuery();
                     }
@@ -418,7 +418,7 @@ public class SqlConClass
                         cmd.Parameters.AddWithValue("@n", (""+creditCardNumber).PadLeft(19,'0'));
                         cmd.Parameters.AddWithValue("@e", email);
                         cmd.Parameters.AddWithValue("@expM", rnd.Next(1,13));
-                        cmd.Parameters.AddWithValue("@expY", rnd.Next(2018, 2028));
+                        cmd.Parameters.AddWithValue("@expY", rnd.Next(18, 28));
                         cmd.Parameters.AddWithValue("@CVC", rnd.Next(100,1000));
                         cmd.Connection = con;
                         cmd.ExecuteNonQuery();
@@ -435,12 +435,13 @@ public class SqlConClass
             }
 
             //initializes taxis for drivers
+            Console.WriteLine(riderCount + " " + userMails.Length);
             for(int i = riderCount; i < userMails.Length; i++)
             {
                 try
                 {
                     using (SqlCommand cmd = new SqlCommand("INSERT INTO Taxi " +
-                                "values (@plate, @color, @driver, @model"))
+                                "values (@plate, @color, @driver, @model)"))
                     {
                         cmd.Parameters.AddWithValue("@plate", ("" + rnd.Next()).PadLeft(16, '0'));
                         cmd.Parameters.AddWithValue("@driver", userMails[i]);
@@ -450,19 +451,20 @@ public class SqlConClass
                         cmd.ExecuteNonQuery();
                     }
                 }
-                catch (SqlException e)
+               catch (SqlException e)
                 {
                     if (e.Number == 2601)
                         i--;
+                    else throw e;
                 }
             }
             //initialize customer service
             for(int i = 0; i < customerServiceFirstNames.Length; i++)
             {
                 using (SqlCommand cmd = new SqlCommand("INSERT INTO Customer_Service " +
-                                "values (@e, @f, @l, @p"))
+                                "values (@e, @f, @l, @p)"))
                 {
-                    cmd.Parameters.AddWithValue("@e", customerServiceFirstNames[i]+ customerServiceLastNames[i]+mailDomains[rnd.Next(mailDomains.Length)]);
+                    cmd.Parameters.AddWithValue("@e", customerServiceFirstNames[i] + customerServiceLastNames[i] + mailDomains[rnd.Next(mailDomains.Length)]);
                     cmd.Parameters.AddWithValue("@f", customerServiceFirstNames[i]);
                     cmd.Parameters.AddWithValue("@l", customerServiceLastNames[i]);
                     cmd.Parameters.AddWithValue("@p", rnd.Next(1000, 1000000));
