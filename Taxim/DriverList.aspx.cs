@@ -13,7 +13,7 @@ public partial class Default2 : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         SqlConClass so = new SqlConClass();
-        GridView2.DataSource = so.showAllBooks();
+        GridView2.DataSource = so.FilterDrivers(null, null, null);
         GridView2.DataBind();
     }
 

@@ -10,48 +10,6 @@ using System.Data;
 public class SqlConClass : System.Web.Services.WebService
 {
     [System.Web.Services.WebMethod(BufferResponse = true)]
-    public DataTable showAllBooks()
-    {
-        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
-        {
-            using (SqlCommand cmd = new SqlCommand("select * from Driver"))
-            {
-                using (SqlDataAdapter sda = new SqlDataAdapter())
-                {
-                    cmd.Connection = con;
-                    sda.SelectCommand = cmd;
-                    using (DataTable dt = new DataTable())
-                    {
-                        dt.TableName = "People";
-                        sda.Fill(dt);
-                        return dt;
-                    }
-                }
-            }
-        }
-    }
-    [System.Web.Services.WebMethod(BufferResponse = true)]
-    public DataTable Deneme()
-    {
-        using (SqlConnection con = new SqlConnection("Server=TAHA;Database=BookManagementCenter;Integrated Security=SSPI"))
-        {
-            using (SqlCommand cmd = new SqlCommand("select * from tblAllBooks"))
-            {
-                using (SqlDataAdapter sda = new SqlDataAdapter())
-                {
-                    cmd.Connection = con;
-                    sda.SelectCommand = cmd;
-                    using (DataTable dt = new DataTable())
-                    {
-                        dt.TableName = "People";
-                        sda.Fill(dt);
-                        return dt;
-                    }
-                }
-            }
-        }
-    }
-    [System.Web.Services.WebMethod(BufferResponse = true)]
     public string LabelDegistir(string name)
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
@@ -101,30 +59,29 @@ public class SqlConClass : System.Web.Services.WebService
         }
     }
     [System.Web.Services.WebMethod(BufferResponse = true)]
-    public string FilterUsers(string firstname, string Lastname, string PhoneNumber,  string personelinfo ,string email)
+    public DataTable FilterUsers(string firstname, string Lastname, string PhoneNumber,  string personelinfo ,string email)
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {//Does not work do not why yet!!
-            using (SqlCommand cmd = new SqlCommand("sp_user_Filter @firstname,@Lastname,@PhoneNumber,@personelinfo,@email"))
+            using (SqlCommand cmd = new SqlCommand("sp_Rider_Filter @firstname,@Lastname,@PhoneNumber,@personelinfo,@email"))
             {
-                cmd.Parameters.AddWithValue("@firstname", firstname ?? Convert.DBNull);
-                cmd.Parameters.AddWithValue("@Lastname", Lastname ?? Convert.DBNull);
-                cmd.Parameters.AddWithValue("@personelinfo", personelinfo ?? Convert.DBNull);
-                cmd.Parameters.AddWithValue("@email", email ?? Convert.DBNull);
-                cmd.Parameters.AddWithValue("@PhoneNumber", PhoneNumber ?? Convert.DBNull);
+                cmd.Parameters.AddWithValue("@firstname", (firstname == null || firstname.Equals("")) ? Convert.DBNull: firstname);
+                cmd.Parameters.AddWithValue("@Lastname", (Lastname == null || Lastname.Equals("")) ? Convert.DBNull : Lastname);
+                cmd.Parameters.AddWithValue("@personelinfo", (personelinfo == null || personelinfo.Equals("")) ? Convert.DBNull : personelinfo);
+                cmd.Parameters.AddWithValue("@email", (email == null || email.Equals("")) ? Convert.DBNull : email);
+                cmd.Parameters.AddWithValue("@PhoneNumber", (PhoneNumber == null || PhoneNumber.Equals("")) ? Convert.DBNull : PhoneNumber);
 
-                cmd.Connection = con;
-                con.Open();
-                string result = "";
-                using (SqlDataReader dr = cmd.ExecuteReader())
+                using (SqlDataAdapter sda = new SqlDataAdapter())
                 {
-                    while (dr.Read())
+                    cmd.Connection = con;
+                    sda.SelectCommand = cmd;
+                    using (DataTable dt = new DataTable())
                     {
-                        result = dr[0].ToString();
+                        dt.TableName = "Rider";
+                        sda.Fill(dt);
+                        return dt;
                     }
                 }
-                con.Close();
-                return result;
             }
         }
     }
