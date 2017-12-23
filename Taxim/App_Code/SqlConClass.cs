@@ -555,7 +555,6 @@ public class SqlConClass : System.Web.Services.WebService
                     cmd.Parameters.AddWithValue("@endP", destinations[0]);
                     System.Diagnostics.Debug.WriteLine(cmd.ToString());
                     cmd.Connection = con;
-                    con.Open();
                     SqlDataReader dr = cmd.ExecuteReader();
                     System.Diagnostics.Debug.WriteLine(dr.ToString());
                     dr.Read();
@@ -580,9 +579,8 @@ public class SqlConClass : System.Web.Services.WebService
                     }
                 }
             }
-            catch(SqlException E)
+            catch(System.InvalidOperationException E)
             {
-                System.Diagnostics.Debug.WriteLine(E.ErrorCode);
                 return -1;
                 //location error
             }

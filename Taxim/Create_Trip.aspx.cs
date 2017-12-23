@@ -44,7 +44,7 @@ public partial class Create_Trip : System.Web.UI.Page
         else if (DropDownList1.Text.Equals(DropDownList1.Items[2]))
             l = 'L';
 
-        Label5.Text = "Maximum estimated price is: " + s.createTrip(
+        int val = s.createTrip(
             DropDownList2.Text,
             CheckBox2.Checked,
             CheckBox1.Checked,
@@ -54,5 +54,9 @@ public partial class Create_Trip : System.Web.UI.Page
             TextBox1.Text,
             destinationPoints
             );
+        if (val > 0)
+            Label5.Text =  "Maximum estimated price is: " + val;
+        else if(val == -1)
+            Label5.Text = "düzgün girin şu locationları aq";
     }
 }
