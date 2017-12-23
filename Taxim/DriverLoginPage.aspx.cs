@@ -23,6 +23,7 @@ public partial class LoginPage : System.Web.UI.Page
         foreach (DataRow dr in dt.Rows)
         {
             Session["E_Mail"] = dr["E_Mail"].ToString();
+            
             Response.Redirect("Home.aspx");
         }
     }

@@ -15,26 +15,25 @@
         <br />
         <br />
         Name
-        <asp:TextBox ID="TextBox1" runat="server" ForeColor="#CCCCCC">Enter name</asp:TextBox>
-        <asp:TextBox ID="TextBox2" runat="server" ForeColor="#CCCCCC" OnTextChanged="TextBox2_TextChanged">Enter lastname</asp:TextBox>
+        <asp:TextBox ID="first_name" runat="server" ForeColor="#CCCCCC">Enter name</asp:TextBox>
+        <asp:TextBox ID="last_name" runat="server" ForeColor="#CCCCCC" >Enter lastname</asp:TextBox>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Mobile:
-        <asp:TextBox ID="TextBox3" runat="server" ForeColor="#CCCCCC">Enter phone</asp:TextBox>
-        <br />
+        <asp:TextBox ID="phone_no" runat="server" ForeColor="#CCCCCC">Enter phone</asp:TextBox>
         <br />
         <br />
         Language:
-        <asp:DropDownList ID="DropDownList1" runat="server">
-            <asp:ListItem>English</asp:ListItem>
-        </asp:DropDownList>
-        <br />
-        <br />
-        Email Address:
-        <asp:TextBox ID="TextBox4" runat="server" ForeColor="#CCCCCC">Enter email address</asp:TextBox>
+        <asp:TextBox ID="language" runat="server" ForeColor="#CCCCCC">Language</asp:TextBox>
+        
         <br />
         <br />
         <br />
-        <asp:Button ID="Button1" runat="server" Text="Save Changes" />
+        <br />
+        <br />
+        <asp:Button ID="save_button" runat="server" Text="Save Changes" OnClick="save_button_Click" />
     
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            
     </div>
     </form>
     <p>

@@ -219,6 +219,68 @@ public class SqlConClass : System.Web.Services.WebService
             }
         }
     }
+    //Inserting credit card
+    //public bool addCreditCard(string holder_name,string card_no,string date,string cvc )
+    //{
+    //    using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+    //    {
+    //        using (SqlCommand cmd = new SqlCommand("INSERT INTO Credit_Card_Info() values (@e_mail)"))
+    //        {
+    //            cmd.Parameters.AddWithValue("@e_mail", e_mail);
+
+    //            cmd.Connection = con;
+    //            con.Open();
+    //            cmd.ExecuteNonQuery();
+    //            con.Close();
+    //            return true;
+    //        }
+    //    }
+    //}
+
+
+
+    //Editing the user data
+    public bool updateUserData(string e_mail,string firstname,string lastname,string language,string phone_no)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("UPDATE UserTable SET  FirstName = '" + firstname + "', LastName = '" + lastname + "', Language = '" + language + "', Phone_No = '" + phone_no + "' WHERE E_mail='" + e_mail + "'")) 
+
+            {
+
+                cmd.Connection = con;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+                return true;
+            }
+        }
+
+    }
+     
+    //Printing the user data
+    public DataTable GetUserProfile(string email)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {//Does not work do not why yet!!
+            using (SqlCommand cmd = new SqlCommand("SELECT * FROM UserTable WHERE E_Mail=@email"))
+            {
+                cmd.Parameters.AddWithValue("@email", email);
+
+                using (SqlDataAdapter sda = new SqlDataAdapter())
+                {
+                    cmd.Connection = con;
+                    sda.SelectCommand = cmd;
+                    using (DataTable dt = new DataTable())
+                    {
+                        dt.TableName = "UserTable";
+                        sda.Fill(dt);
+                        return dt;
+                    }
+                }
+            }
+        }
+    }
 
     [System.Web.Services.WebMethod(BufferResponse = true)]
     public bool registerCustomer(string e_mail)
