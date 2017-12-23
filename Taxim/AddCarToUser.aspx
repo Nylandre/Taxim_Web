@@ -6,11 +6,15 @@
 <head runat="server">
     <title></title>
 </head>
-<body>
+<body style="height: 444px">
     <form id="form1" runat="server">
         <div>
+        	<asp:Label ID="Label6" runat="server" Text="Label"></asp:Label>
+		</div>
+    	<p>
         	<asp:Label ID="Label1" runat="server" Text="Plate Number:"></asp:Label>
-			<input id="Text1" type="text" runat="server"/></div>
+			<input id="Text1" type="text" runat="server"/></p>
+    	<p>
         	<asp:Label ID="Label2" runat="server" Text="Color"></asp:Label>
 			<asp:DropDownList ID="DropDownList1" runat="server" >
 				<asp:ListItem>White</asp:ListItem>
@@ -22,13 +26,20 @@
 				<asp:ListItem>Brown</asp:ListItem>
 				<asp:ListItem>Pink</asp:ListItem>
 		</asp:DropDownList>
-		<asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:TaximConnectionString %>" SelectCommand="SELECT * FROM [Model]"></asp:SqlDataSource>
+		</p>
+		<p>
 		<asp:Label ID="Label3" runat="server" Text="Car Model"></asp:Label>
 		<asp:DropDownList ID="DropDownList2" runat="server" DataSourceID="SqlDataSource1" DataTextField="Model_Name" DataValueField="Model_Name">
 		</asp:DropDownList>
-    	<p>
+    	</p>
+		<p>
 			<asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Add Car" />
 		</p>
+		<asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:TaximConnectionString %>" SelectCommand="SELECT * FROM [Model]"></asp:SqlDataSource>
+		<p>
+			&nbsp;</p>
+		<p>
+			&nbsp;</p>
     	<asp:Label ID="Label4" runat="server" Text="Label"></asp:Label>
     </form>
 </body>

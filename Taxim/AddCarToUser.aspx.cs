@@ -9,7 +9,7 @@ public partial class AddCarToUser : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        
+        Label6.Text = "Welcome " + Session["E_Mail"].ToString();
 
     }
     //TODO login yapmis kullanıcının email'ini alması gerekiyor burda
@@ -17,7 +17,7 @@ public partial class AddCarToUser : System.Web.UI.Page
     protected void Button1_Click(object sender, EventArgs e)
     {
         SqlConClass sql = new SqlConClass();
-        String driver_id = "onurcanee4gpa@gpa.com"; //TODO burda login olmuş kullanıcıyı al
+        String driver_id = Session["E_Mail"].ToString(); //TODO burda login olmuş kullanıcıyı al
         String plateNumber = Text1.Value;
         String color = DropDownList1.SelectedValue;
         String modelName = DropDownList2.SelectedValue;

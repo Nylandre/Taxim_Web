@@ -217,6 +217,31 @@ public class SqlConClass : System.Web.Services.WebService
             }
         }
     }
+
+    [System.Web.Services.WebMethod(BufferResponse = true)]
+    public bool deleteCarFromDriver(string plate_number)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("DELETE FROM Taxi WHERE plate_Number = "))
+            {
+                cmd.Parameters.AddWithValue("@plate", plate_number);
+                cmd.Connection = con;
+                con.Open();
+                string result = "";
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    //   while (dr.Read())
+                    //   {
+                    //       result = dr[0].ToString();
+                    //  }
+                }
+                con.Close();
+                return true;
+            }
+        }
+    }
+
     [System.Web.Services.WebMethod(BufferResponse = true)]
     public DataTable login(string email, string password)
     {

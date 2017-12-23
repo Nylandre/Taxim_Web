@@ -20,7 +20,6 @@ public partial class LoginPage : System.Web.UI.Page
         string email = Text1.Value;
         string password = Password1.Value;
         DataTable dt = sql.login(email, password);
-        Console.WriteLine("hello");
         foreach (DataRow dr in dt.Rows)
         {
             Session["E_Mail"] = dr["E_Mail"].ToString();
