@@ -164,6 +164,31 @@ public class SqlConClass : System.Web.Services.WebService
             }
         }
     }
+
+    [System.Web.Services.WebMethod(BufferResponse = true)]
+    public bool registerCustomer(string e_mail)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("INSERT INTO Customer(E_Mail) values (@e_mail)"))
+            {
+                cmd.Parameters.AddWithValue("@e_mail", e_mail);
+
+                cmd.Connection = con;
+                con.Open();
+                string result = "";
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    //   while (dr.Read())
+                    //   {
+                    //       result = dr[0].ToString();
+                    //  }
+                }
+                con.Close();
+                return true;
+            }
+        }
+    }
     [System.Web.Services.WebMethod(BufferResponse = true)]
     public bool addModel(int capacity, char luxury, string model_name)
     {
