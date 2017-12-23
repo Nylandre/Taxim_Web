@@ -10,6 +10,51 @@ using System.Data;
 public class SqlConClass : System.Web.Services.WebService
 {
     [System.Web.Services.WebMethod(BufferResponse = true)]
+    public string findUserOnMergeTrip(int mergeTID)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("select Passenger.E_Mail from Passenger inner join Merged_Trip on Merged_Trip.Merged_Trip_ID = Passenger.Merged_Trip_ID  where Merged_Trip.Merged_Trip_ID = @mergeTID"))
+            {
+                cmd.Parameters.AddWithValue("@mergeTID", mergeTID);
+                cmd.Connection = con;
+                con.Open();
+                string result = "";
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        result = dr[0].ToString();
+                    }
+                }
+                con.Close();
+                return result;
+            }
+        }
+    }
+    public DataTable FilterMergedTrips( string email)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("select * from Merged_Trip where E_Mail=@email and Rating is NULL"))
+            {
+                cmd.Parameters.AddWithValue("@email", (email == null || email.Equals("")) ? Convert.DBNull : email);
+
+                using (SqlDataAdapter sda = new SqlDataAdapter())
+                {
+                    cmd.Connection = con;
+                    sda.SelectCommand = cmd;
+                    using (DataTable dt = new DataTable())
+                    {
+                        dt.TableName = "Rider";
+                        sda.Fill(dt);
+                        return dt;
+                    }
+                }
+            }
+        }
+    }
+    [System.Web.Services.WebMethod(BufferResponse = true)]
     public string LabelDegistir(string name)
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
