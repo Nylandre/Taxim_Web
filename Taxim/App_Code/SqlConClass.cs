@@ -10,6 +10,30 @@ using System.Data;
 public class SqlConClass : System.Web.Services.WebService
 {
     [System.Web.Services.WebMethod(BufferResponse = true)]
+    public void RateRider(int mergedTripID,int rating ,string comment)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("UPDATE Merged_Trip SET Rating = @rating, Comment= @comment WHERE Merged_Trip_ID = @mergedTripID; "))
+            {
+                cmd.Parameters.AddWithValue("@rating", rating);
+                cmd.Parameters.AddWithValue("@comment", comment);
+                cmd.Parameters.AddWithValue("@mergedTripID", mergedTripID);
+                cmd.Connection = con;
+                con.Open();
+                string result = "";
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        result = dr[0].ToString();
+                    }
+                }
+                con.Close();
+            }
+        }
+    }
+    [System.Web.Services.WebMethod(BufferResponse = true)]
     public string LabelDegistir(string name)
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
@@ -39,7 +63,7 @@ public class SqlConClass : System.Web.Services.WebService
         {
             using (SqlCommand cmd = new SqlCommand("sp_tblIssue_Filter @Issue_id,@complaint,@complainerEmail,@trip_ID"))
             {
-                cmd.Parameters.AddWithValue("@complaint", complaint ?? Convert.DBNull);
+                cmd.Parameters.AddWithValue("@complaint", (complaint == null || complaint.Equals("")) ? Convert.DBNull : complaint);
                 cmd.Parameters.AddWithValue("@Issue_id", Issue_id ?? Convert.DBNull);
                 cmd.Parameters.AddWithValue("@complainerEmail", (complainerEmail == null || complainerEmail.Equals("")) ? Convert.DBNull : complainerEmail);
                 cmd.Parameters.AddWithValue("@trip_ID", (trip_ID == null) ? Convert.DBNull : trip_ID);
@@ -560,17 +584,12 @@ public class SqlConClass : System.Web.Services.WebService
     public int createTrip(string paymentMethod, Boolean choose, Boolean noOtherRider,
         int minuteOffset, char Luxury, string capacity)
     {
-        int[] locationIDS = 
+        int[] locationIDS; 
             
         using (SqlCommand cmd = new SqlCommand("INSERT INTO Customer_Service " +
                                 "values (@e, @f, @l, @p)"))
         {
-            cmd.Parameters.AddWithValue("@e", customerServiceFirstNames[i] + customerServiceLastNames[i] + mailDomains[rnd.Next(mailDomains.Length)]);
-            cmd.Parameters.AddWithValue("@f", customerServiceFirstNames[i]);
-            cmd.Parameters.AddWithValue("@l", customerServiceLastNames[i]);
-            cmd.Parameters.AddWithValue("@p", rnd.Next(1000, 1000000));
-            cmd.Connection = con;
-            cmd.ExecuteNonQuery();
         }
+        return 0;
     }
 }

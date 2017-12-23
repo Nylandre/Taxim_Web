@@ -35,6 +35,6 @@ public partial class Create_Trip : System.Web.UI.Page
     {
         string[] destinationPoints = TextBox2.Text.Split(new char[]{ '\n'});
         SqlConClass s = new SqlConClass();
-        Label5.Text = "Maximum estimated price is: " + s.createTrip();
+        //Label5.Text = "Maximum estimated price is: " + s.createTrip();
     }
 }
