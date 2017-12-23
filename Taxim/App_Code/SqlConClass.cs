@@ -443,9 +443,6 @@ public class SqlConClass : System.Web.Services.WebService
                 }
                 userMails[i] = email;
             }
-
-            
-
             //Initialize language knows table, credit card table
             foreach (String email in userMails)
             {
