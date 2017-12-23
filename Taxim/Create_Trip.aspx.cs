@@ -35,6 +35,24 @@ public partial class Create_Trip : System.Web.UI.Page
     {
         string[] destinationPoints = TextBox2.Text.Split(new char[]{ '\n'});
         SqlConClass s = new SqlConClass();
-        //Label5.Text = "Maximum estimated price is: " + s.createTrip();
+        int min = 0;
+        if (!RadioButtonList1.SelectedValue.Equals(RadioButtonList1.Items[0]))
+            min = Int32.Parse(TextBox4.Text);
+        Char l = 'M';
+        if (DropDownList1.Text.Equals(DropDownList1.Items[1]))
+            l = 'Q';
+        else if (DropDownList1.Text.Equals(DropDownList1.Items[2]))
+            l = 'L';
+
+        Label5.Text = "Maximum estimated price is: " + s.createTrip(
+            DropDownList2.Text,
+            CheckBox2.Checked,
+            CheckBox1.Checked,
+            min,
+            l,
+            TextBox3.Text,
+            TextBox1.Text,
+            destinationPoints
+            );
     }
 }
