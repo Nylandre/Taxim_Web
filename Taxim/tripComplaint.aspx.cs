@@ -9,7 +9,9 @@ public partial class GitDeneyenSayfa : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        SqlConClass so = new SqlConClass();
+        GridView2.DataSource = so.FilterComplaints(null, null, null,null);
+        GridView2.DataBind();
     }
 
     //The button that filters all the complaints given information from textboxes
@@ -22,8 +24,7 @@ public partial class GitDeneyenSayfa : System.Web.UI.Page
             Issue_id = Int32.Parse(TextBox6.Text);
         if (!TextBox7.Text.Equals(""))
             trip_ID = Int32.Parse(TextBox7.Text);
-        GridView1.DataSourceID = null;
-        GridView1.DataSource = so.FilterComplaints(Issue_id, TextBox4.Text, TextBox5.Text, trip_ID);
-        GridView1.DataBind();
+        GridView2.DataSource = so.FilterComplaints(Issue_id, TextBox4.Text, TextBox5.Text, trip_ID);
+        GridView2.DataBind();
     }
 }
