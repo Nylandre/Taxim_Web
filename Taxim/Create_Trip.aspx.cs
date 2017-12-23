@@ -33,7 +33,7 @@ public partial class Create_Trip : System.Web.UI.Page
 
     protected void Button1_Click(object sender, EventArgs e)
     {
-        string[] destinationPoints = TextBox2.Text.Split(new char[]{ '\n'});
+        string[] destinationPoints = TextBox2.Text.Replace("\r", "").Split(new char[]{ '\n'});
         SqlConClass s = new SqlConClass();
         int min = 0;
         if (!RadioButtonList1.SelectedValue.Equals(RadioButtonList1.Items[0]))
