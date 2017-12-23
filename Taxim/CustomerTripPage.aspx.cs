@@ -9,6 +9,8 @@ public partial class CustomerTripPage : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        SqlConClass so = new SqlConClass();
+        GridView1.DataSource = so.FilterUserTrips(Session["E_Mail"].ToString());
+        GridView1.DataBind();
     }
 }

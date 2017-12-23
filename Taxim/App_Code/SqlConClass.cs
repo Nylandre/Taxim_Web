@@ -32,6 +32,33 @@ public class SqlConClass : System.Web.Services.WebService
             }
         }
     }
+
+    public object FilterUserTrips(string email)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("SELECT [Merged_Trip_ID], [Start_Time], [End_Time], [Plate_Number], [Rating], [Comment] FROM [Merged_Trip] WHERE ([Rating] IS NOT NULL) and  Merged_Trip_ID in (SELECT Merged_Trip_ID from Passenger where E_Mail = @email)"))
+            {
+                cmd.Parameters.AddWithValue("@email", email);
+
+                cmd.Connection = con;
+                con.Open();
+                string result = "";
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        result = dr[0].ToString();
+                    }
+                }
+                con.Close();
+                return result;
+            }
+        }
+    }
+        
+    
+
     [System.Web.Services.WebMethod(BufferResponse = true)]
     public void RateRider(int mergedTripID, int rating, string comment)
     {
@@ -254,7 +281,7 @@ public class SqlConClass : System.Web.Services.WebService
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {
-            using (SqlCommand cmd = new SqlCommand("select * from UserTable NATURAL JOIN Customer where E_Mail = @email and Pass = @pass"))
+            using (SqlCommand cmd = new SqlCommand("SELECT * FROM UserTable JOIN Customer ON UserTable.E_Mail = Customer.E_Mail WHERE Customer.E_Mail = @email and Pass = @pass "))
             {
                 cmd.Parameters.AddWithValue("@email", email);
                 cmd.Parameters.AddWithValue("@pass", password);
