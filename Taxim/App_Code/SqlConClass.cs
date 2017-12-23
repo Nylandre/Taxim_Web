@@ -272,7 +272,7 @@ public class SqlConClass : System.Web.Services.WebService
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {
-            using (SqlCommand cmd = new SqlCommand("DELETE FROM Taxi WHERE plate_Number = "))
+            using (SqlCommand cmd = new SqlCommand("DELETE FROM Taxi WHERE plate_Number = @plate"))
             {
                 cmd.Parameters.AddWithValue("@plate", plate_number);
                 cmd.Connection = con;
@@ -292,11 +292,11 @@ public class SqlConClass : System.Web.Services.WebService
     }
 
     [System.Web.Services.WebMethod(BufferResponse = true)]
-    public DataTable login(string email, string password)
+    public DataTable loginCustomer(string email, string password)
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {
-            using (SqlCommand cmd = new SqlCommand("select * from UserTable where E_Mail = @email and Pass = @pass"))
+            using (SqlCommand cmd = new SqlCommand("select * from UserTable NATURAL JOIN Customer where E_Mail = @email and Pass = @pass"))
             {
                 cmd.Parameters.AddWithValue("@email", email);
                 cmd.Parameters.AddWithValue("@pass", password);
@@ -314,8 +314,30 @@ public class SqlConClass : System.Web.Services.WebService
             }
         }
     }
-    
-    
+
+    [System.Web.Services.WebMethod(BufferResponse = true)]
+    public DataTable loginDriver(string email, string password)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("SELECT * FROM UserTable JOIN Driver ON UserTable.E_Mail = Driver.E_Mail WHERE Driver.E_Mail = @email and Pass = @pass "))
+            {
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Parameters.AddWithValue("@pass", password);
+
+                cmd.Connection = con;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                DataTable dt = new DataTable();
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+
+                con.Close();
+                return dt;
+
+            }
+        }
+    }
     public void populateDatabase() //Randomly populates the database
     {
         Random rnd = new Random();
