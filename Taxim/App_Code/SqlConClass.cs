@@ -78,7 +78,7 @@ public class SqlConClass : System.Web.Services.WebService
         }
     }
 
-    public object FilterUserTrips(string email)
+    public DataTable FilterUserTrips(string email)
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {
@@ -88,16 +88,20 @@ public class SqlConClass : System.Web.Services.WebService
 
                 cmd.Connection = con;
                 con.Open();
-                string result = "";
-                using (SqlDataReader dr = cmd.ExecuteReader())
+                
+                
+                using (SqlDataAdapter sda = new SqlDataAdapter())
                 {
-                    while (dr.Read())
+                    cmd.Connection = con;
+                    sda.SelectCommand = cmd;
+                    using (DataTable dt = new DataTable())
                     {
-                        result = dr[0].ToString();
+                        dt.TableName = "UserTrips";
+                        sda.Fill(dt);
+                        return dt;
                     }
                 }
-                con.Close();
-                return result;
+                
             }
         }
     }
@@ -317,6 +321,34 @@ public class SqlConClass : System.Web.Services.WebService
                 cmd.ExecuteNonQuery();
                 con.Close();
                 return true;
+            }
+        }
+    }
+
+    [System.Web.Services.WebMethod(BufferResponse = true)]
+    public DataTable showAcceptedDrivers(string email)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("select Loc.Name,E_Mail,UserTable.Phone_Number,UserTable.Age from Accept join Requested_Destinations on Requested_Destinations.trip_id = Accept.trip_id join Loc on Loc.Location_ID = Requested_Destinations.Location_ID where Accept.trip_id in (select Passenger.trip_id from Passenger where E_mail = @email ) and E_Mail in (select E_Mail from UserTable)"))
+            {
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Connection = con;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+                
+                using (SqlDataAdapter sda = new SqlDataAdapter())
+                {
+                    cmd.Connection = con;
+                    sda.SelectCommand = cmd;
+                    using (DataTable dt = new DataTable())
+                    {
+                        dt.TableName = "Accepted Drivers";
+                        sda.Fill(dt);
+                        return dt;
+                    }
+                }
             }
         }
     }
