@@ -19,7 +19,7 @@ public partial class LoginPage : System.Web.UI.Page
         SqlConClass sql = new SqlConClass();
         string email = Text1.Value;
         string password = Password1.Value;
-        DataTable dt = sql.login(email, password);
+        DataTable dt = sql.loginDriver(email, password);
         foreach (DataRow dr in dt.Rows)
         {
             Session["E_Mail"] = dr["E_Mail"].ToString();
