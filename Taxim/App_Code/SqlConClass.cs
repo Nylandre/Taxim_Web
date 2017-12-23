@@ -9,6 +9,29 @@ using System.Data;
 /// </summary>
 public class SqlConClass : System.Web.Services.WebService
 {
+    [System.Web.Services.WebMethod(BufferResponse = true)]
+    public string findUserOnMergeTrip(int mergeTID)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("select Passenger.E_Mail from Passenger inner join Merged_Trip on Merged_Trip.Merged_Trip_ID = Passenger.Merged_Trip_ID  where Merged_Trip.Merged_Trip_ID = @mergeTID"))
+            {
+                cmd.Parameters.AddWithValue("@mergeTID", mergeTID);
+                cmd.Connection = con;
+                con.Open();
+                string result = "";
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        result = dr[0].ToString();
+                    }
+                }
+                con.Close();
+                return result;
+            }
+        }
+    }
     public DataTable FilterMergedTrips( string email)
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))

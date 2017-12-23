@@ -26,10 +26,9 @@ GridViewCommandEventArgs e)
             // from the Rows collection.
             GridViewRow row = GridView1.Rows[index];
 
-            int bookID = Int32.Parse(row.Cells[1].Text);
-            string RiderEmail = so.findUserOnMergeTrip();
-
-            Session["RatedRider"] = RiderEmail;
+            int mId = Int32.Parse(row.Cells[1].Text);
+            Label1.Text = ""+mId;
+            Session["RatedMTID"] = mId;
             Response.Redirect("RateRider.aspx");
 
         }

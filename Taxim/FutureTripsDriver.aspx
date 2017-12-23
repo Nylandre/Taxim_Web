@@ -15,6 +15,7 @@
                 <asp:ButtonField ButtonType="Button" CommandName="Select" Text="End/Rate" />
             </Columns>
         </asp:GridView>
+        <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
         <br />
         <br />
         <br />
