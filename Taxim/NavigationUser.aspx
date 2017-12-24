@@ -11,7 +11,7 @@
     <div>
     
         <br />
-        <asp:Menu ID="Menu1" runat="server">
+        <asp:Menu ID="Menu1" runat="server" OnMenuItemClick="Menu1_MenuItemClick">
             <Items>
                 <asp:MenuItem Text="Taxim" Value="Taxim"></asp:MenuItem>
                 <asp:MenuItem Text="Profile Page" Value="Profile Page">
