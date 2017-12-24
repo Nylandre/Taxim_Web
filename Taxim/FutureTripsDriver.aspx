@@ -10,7 +10,7 @@
     <form id="form1" runat="server">
     <div>
     
-        <asp:GridView ID="GridView1" runat="server"  OnRowCommand="FutureTrips_RowCommand">
+        l<asp:GridView ID="GridView1" runat="server"  OnRowCommand="FutureTrips_RowCommand">
             <Columns>
                 <asp:ButtonField ButtonType="Button" CommandName="Select" Text="End/Rate" />
             </Columns>
