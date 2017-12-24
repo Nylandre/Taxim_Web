@@ -17,11 +17,12 @@ public partial class AddCarToUser : System.Web.UI.Page
     protected void Button1_Click(object sender, EventArgs e)
     {
         SqlConClass sql = new SqlConClass();
-        String driver_id = Session["E_Mail"].ToString(); //TODO burda login olmuş kullanıcıyı al
+        String driver_id = Session["E_Mail"].ToString(); 
         String plateNumber = Text1.Value;
         String color = DropDownList1.SelectedValue;
         String modelName = DropDownList2.SelectedValue;
         sql.addCarToDriver(modelName, plateNumber, color, driver_id);
         Label4.Text = "New car is added to " + driver_id;
+        Response.Redirect("SignIn.aspx");
     }
 }

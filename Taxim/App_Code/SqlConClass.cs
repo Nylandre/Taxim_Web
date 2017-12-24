@@ -300,13 +300,19 @@ public class SqlConClass : System.Web.Services.WebService
         }
     }
     [System.Web.Services.WebMethod(BufferResponse = true)]
-    public bool registerDriver(string e_mail)
+    public bool registerDriver(string e_mail, string phone, string fname, string lname, string ps_info, string pass, string age)
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {
             using (SqlCommand cmd = new SqlCommand("RegistrationDriver  @e_mail ,@phone , @fname , @lname , @ps_info , @pass , @age"))
             {
                 cmd.Parameters.AddWithValue("@e_mail", e_mail);
+                cmd.Parameters.AddWithValue("@phone", phone);
+                cmd.Parameters.AddWithValue("@fname", fname);
+                cmd.Parameters.AddWithValue("@lname", lname);
+                cmd.Parameters.AddWithValue("@ps_info", ps_info);
+                cmd.Parameters.AddWithValue("@pass", pass);
+                cmd.Parameters.AddWithValue("@age", age);
 
                 cmd.Connection = con;
                 con.Open();
