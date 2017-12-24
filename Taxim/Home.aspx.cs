@@ -32,11 +32,16 @@ public partial class Home : System.Web.UI.Page
 
     protected void Button5_Click(object sender, EventArgs e)
     {
-        Response.Redirect("ProfilePage.aspx");
+        Response.Redirect("CustomerProfilePage.aspx");
     }
 
     protected void Button2_Click(object sender, EventArgs e)
     {
         Response.Redirect("CustomerTripPage.aspx");
+    }
+
+    protected void Button6_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("FutureTripsRider.aspx");
     }
 }

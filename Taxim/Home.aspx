@@ -17,9 +17,14 @@
 		<p>
 			<asp:Button ID="Button2" runat="server" OnClick="Button2_Click" Text="My Previous Trips" />
 		</p>
-		<p>
-			<asp:Button ID="Button5" runat="server" OnClick="Button5_Click" Text="Button" />
+        <p>
+			<asp:Button ID="Button6" runat="server" OnClick="Button6_Click" Text="Future Trips" />
 		</p>
+		<p>
+			<asp:Button ID="Button5" runat="server" OnClick="Button5_Click" Text="Profile Page" />
+		</p>
+        <p>
+			&nbsp;</p>
 		<p>
 			<asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Log Out" />
 		</p>

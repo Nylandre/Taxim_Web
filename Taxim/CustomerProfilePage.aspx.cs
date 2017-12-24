@@ -16,8 +16,8 @@ public partial class ProfilePage : System.Web.UI.Page
         {
             SqlConClass sql = new SqlConClass();
             string e_mail = "VeggrAmy18@hotmail.com";
-            //DataTable dt = sql.GetUserProfile(Session["E_mail"].ToString());
-            DataTable dt = sql.GetUserProfile(e_mail);
+            DataTable dt = sql.GetUserProfile(Session["E_mail"].ToString());
+            //DataTable dt = sql.GetUserProfile(e_mail);
 
             foreach (DataRow dr in dt.Rows)
             {
@@ -35,7 +35,7 @@ public partial class ProfilePage : System.Web.UI.Page
     protected void save_button_Click(object sender, EventArgs e)
     {
         SqlConClass sql = new SqlConClass();
-        string e_mail = "VeggrAmy18@hotmail.com";//= Session["E_mail"].ToString()
+        string e_mail = Session["E_mail"].ToString();//= "VeggrAmy18@hotmail.com"
         sql.updateUserData(e_mail,first_name.Text, last_name.Text, language.Text, phone_no.Text);
     }
 
