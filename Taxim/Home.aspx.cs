@@ -55,4 +55,11 @@ public partial class Home : System.Web.UI.Page
     {
         Response.Redirect("PaymentInfo.aspx");
     }
+
+    protected void Button8_Click(object sender, EventArgs e)
+    {
+        //Report that user started a trip
+        SqlConClass so = new SqlConClass();
+        so.updateMergedTripStartDate(Session["E_Mail"].ToString());
+    }
 }
