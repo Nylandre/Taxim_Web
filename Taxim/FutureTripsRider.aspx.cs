@@ -10,7 +10,7 @@ public partial class FutureTripsRider : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         SqlConClass so = new SqlConClass();
-        GridView1.DataSource = so.FilterMergedTrips(Session["E_Mail"].ToString());
+        GridView1.DataSource = so.FilterMergeTripsForRider(Session["E_Mail"].ToString());//nooo this has to filter passengers
         GridView1.DataBind();
     }
 
