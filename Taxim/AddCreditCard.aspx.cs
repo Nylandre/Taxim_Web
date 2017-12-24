@@ -13,12 +13,6 @@ public partial class AddCreditCard : System.Web.UI.Page
     {
 
     }
-
-
-
-
-
-
     protected void Calendar1_SelectionChanged(object sender, EventArgs e)
     {
         month = exp_date.SelectedDate.Month;

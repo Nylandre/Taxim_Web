@@ -99,6 +99,28 @@ public class SqlConClass : System.Web.Services.WebService
             }
         }
     }
+    public DataTable FilterMergeTripsForRider(string email)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("select Merged_Trip.Merged_Trip_ID, Start_Time, End_Time,Plate_Number from Merged_Trip inner join Passenger on  Passenger.Merged_Trip_ID = Merged_Trip.Merged_Trip_ID where Passenger.E_Mail = @email"))
+            {
+                cmd.Parameters.AddWithValue("@email", (email == null || email.Equals("")) ? Convert.DBNull : email);
+
+                using (SqlDataAdapter sda = new SqlDataAdapter())
+                {
+                    cmd.Connection = con;
+                    sda.SelectCommand = cmd;
+                    using (DataTable dt = new DataTable())
+                    {
+                        dt.TableName = "Rider";
+                        sda.Fill(dt);
+                        return dt;
+                    }
+                }
+            }
+        }
+    }
     [System.Web.Services.WebMethod(BufferResponse = true)]
     public string LabelDegistir(string name)
     {

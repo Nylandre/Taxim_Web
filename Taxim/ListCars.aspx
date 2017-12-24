@@ -5,6 +5,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+	<style type="text/css">
+  .hiddencol
+  {
+    display: none;
+  }
+</style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -39,6 +45,7 @@
 							<asp:Label ID="Label1" runat="server" Text='<%# Bind("Model_Name") %>'></asp:Label>
 						</ItemTemplate>
 					</asp:TemplateField>
+					<asp:BoundField DataField="Driver_ID" SortExpression="Driver_ID" ItemStyle-CssClass="hiddencol" />
 					<asp:CommandField ShowEditButton="True" />
 				</Columns>
 			</asp:GridView>
