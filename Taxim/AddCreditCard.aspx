@@ -13,20 +13,20 @@
         Credit Card Information<br />
         <br />
         Name on Card:
-        <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+        <asp:TextBox ID="holder_name" runat="server"></asp:TextBox>
         <br />
         <br />
-        Card Number:<asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
+        Card Number:<asp:TextBox ID="card_no" runat="server"></asp:TextBox>
         <br />
         <br />
-        Expiration Date:<asp:Calendar ID="Calendar1" runat="server"></asp:Calendar>
+        Expiration Date:<asp:Calendar ID="exp_date" runat="server" OnSelectionChanged="Calendar1_SelectionChanged"></asp:Calendar>
         <br />
         <br />
-        CVC Code:<asp:TextBox ID="TextBox3" runat="server"></asp:TextBox>
+        CVC Code:<asp:TextBox ID="cvc" runat="server"></asp:TextBox>
         <br />
         <br />
         <br />
-        <asp:Button ID="Button1" runat="server" Text="Add Credit Card" />
+        <asp:Button ID="add_card" runat="server" Text="Add Credit Card" OnClick="Button1_Click" />
         <br />
         <br />
         <br />

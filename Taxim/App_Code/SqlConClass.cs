@@ -273,22 +273,22 @@ public class SqlConClass : System.Web.Services.WebService
         }
     }
     //Inserting credit card
-    //public bool addCreditCard(string holder_name,string card_no,string date,string cvc )
-    //{
-    //    using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
-    //    {
-    //        using (SqlCommand cmd = new SqlCommand("INSERT INTO Credit_Card_Info() values (@e_mail)"))
-    //        {
-    //            cmd.Parameters.AddWithValue("@e_mail", e_mail);
+    public bool addCreditCard(string holder_name, string card_no, int date_month,int date_year, int cvc)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("INSERT INTO Credit_Card_Info(Card_Owner_Name,Credit_Card_Number,Exp_Month,Exp_Year,CVC) values ('" + holder_name + "','" + card_no + "','" + date_month + "','" + date_year + "','" + cvc + "') "))
+            {
 
-    //            cmd.Connection = con;
-    //            con.Open();
-    //            cmd.ExecuteNonQuery();
-    //            con.Close();
-    //            return true;
-    //        }
-    //    }
-    //}
+
+                cmd.Connection = con;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+                return true;
+            }
+        }
+    }
 
 
 
