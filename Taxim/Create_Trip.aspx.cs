@@ -15,7 +15,8 @@ public partial class Create_Trip : System.Web.UI.Page
 
     protected void CheckBox1_CheckedChanged(object sender, EventArgs e)
     {
-        if (CheckBox1.Checked)
+       
+        if (CheckBox1.Checked == true)
         {
             CheckBox2.Checked = true;
             CheckBox2.Enabled = false;
@@ -27,7 +28,10 @@ public partial class Create_Trip : System.Web.UI.Page
     
     protected void RadioButtonList1_SelectedIndexChanged(object sender, EventArgs e)
     {
-        TextBox4.Enabled = !RadioButtonList1.SelectedValue.Equals(RadioButtonList1.Items[0]);
+        if (RadioButtonList1.SelectedValue.Equals(RadioButtonList1.Items[0]))
+            TextBox4.Enabled = false;
+        else 
+            TextBox4.Enabled = true;
         //if user chooses to order taxi now, textbox gets disabled
     }
 
