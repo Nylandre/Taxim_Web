@@ -234,11 +234,11 @@ public class SqlConClass : System.Web.Services.WebService
         }
     }
     [System.Web.Services.WebMethod(BufferResponse = true)]
-    public bool registerUser(string e_mail, string phone, string fname, string lname, string ps_info, string pass, string age)
+    public bool registerCustomer(string e_mail, string phone, string fname, string lname, string ps_info, string pass, string age)
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {
-            using (SqlCommand cmd = new SqlCommand("INSERT INTO UserTable(E_mail,Phone_Number,FirstName,LastName,Personal_Info,Pass,Age) values ( @e_mail ,@phone , @fname , @lname , @ps_info , @pass , @age )"))
+            using (SqlCommand cmd = new SqlCommand("RegistrationCustomer  @e_mail ,@phone , @fname , @lname , @ps_info , @pass , @age "))
             {
                 cmd.Parameters.AddWithValue("@e_mail", e_mail);
                 cmd.Parameters.AddWithValue("@phone", phone);
@@ -261,7 +261,7 @@ public class SqlConClass : System.Web.Services.WebService
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {
-            using (SqlCommand cmd = new SqlCommand("INSERT INTO Driver(E_Mail) values (@e_mail)"))
+            using (SqlCommand cmd = new SqlCommand("RegistrationDriver  @e_mail ,@phone , @fname , @lname , @ps_info , @pass , @age"))
             {
                 cmd.Parameters.AddWithValue("@e_mail", e_mail);
 

@@ -24,8 +24,8 @@ public partial class DriverRegister : System.Web.UI.Page
         string age = Text7.Value;
 
 
-        bool res = sqlConClass.registerUser(mail, phone, fname, lname, personal_info, pass, age); //first add as user
-        res = sqlConClass.registerDriver(mail); // then add as driver
+        //bool res = sqlConClass.registerUser(mail, phone, fname, lname, personal_info, pass, age); //first add as user
+        //res = sqlConClass.registerDriver(mail); // then add as driver
         Response.Write("<script>alert('You have been registered successfully.')</script>");
         Response.Redirect("SignIn.aspx");
    
