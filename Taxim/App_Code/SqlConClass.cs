@@ -103,7 +103,7 @@ public class SqlConClass : System.Web.Services.WebService
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {
-            using (SqlCommand cmd = new SqlCommand("select Merged_Trip.Merged_Trip_ID, Start_Time, End_Time,Plate_Number from Merged_Trip inner join Passenger on  Passenger.Merged_Trip_ID = Merged_Trip.Merged_Trip_ID where Passenger.E_Mail = @email"))
+            using (SqlCommand cmd = new SqlCommand("select Merged_Trip.Merged_Trip_ID, Start_Time, End_Time,Plate_Number from Merged_Trip inner join Passenger on  Passenger.Merged_Trip_ID = Merged_Trip.Merged_Trip_ID where Passenger.E_Mail = @email and Passenger.rating is NULL"))
             {
                 cmd.Parameters.AddWithValue("@email", (email == null || email.Equals("")) ? Convert.DBNull : email);
 
@@ -149,7 +149,7 @@ public class SqlConClass : System.Web.Services.WebService
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {
-            using (SqlCommand cmd = new SqlCommand("SELECT [Merged_Trip_ID], [Start_Time], [End_Time], [Plate_Number], [Rating], [Comment] FROM [Merged_Trip] WHERE ([Rating] IS NOT NULL) and  Merged_Trip_ID in (SELECT Merged_Trip_ID from Passenger where E_Mail = @email)"))
+            using (SqlCommand cmd = new SqlCommand("select Merged_Trip.Merged_Trip_ID, Start_Time, End_Time,Plate_Number from Merged_Trip inner join Passenger on  Passenger.Merged_Trip_ID = Merged_Trip.Merged_Trip_ID where Passenger.E_Mail = 'AnarrAmon271@vahiymail.com' and Passenger.rating is NOT NULL"))
             {
                 cmd.Parameters.AddWithValue("@email", email);
 
@@ -1149,24 +1149,15 @@ public class SqlConClass : System.Web.Services.WebService
         List<int> currentRouteCoordinatesX = new List<int>();
         List<int> currentRouteCoordinatesY = new List<int>();
         List<int> requestedRouteIDS = new List<int>();
+        List<int> currentRouteIDS = new List<int>();
+        int merged_trip_id = 0;
+        int driverLoc = 0;
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {
             con.Open();
-            using (SqlCommand cmd = new SqlCommand("SELECT * FROM requestedRoutesWithCoordinates WHERE trip_id = @trip ORDER BY order_in_the_trip ASC"))
-            {
-                cmd.Parameters.AddWithValue("@trip", requestedTrip);
-                cmd.Connection = con;
-                SqlDataReader dr = cmd.ExecuteReader();
-
-                while (dr.Read())
-                {
-                    requestedRouteCoordinatesX.Add(dr.GetInt32(0));
-                    requestedRouteCoordinatesY.Add(dr.GetInt32(1));
-                    requestedRouteIDS.Add(dr.GetInt32(3));
-                }
-                dr.Close();
-            }
-            using (SqlCommand cmd = new SqlCommand("SELECT * FROM getLeftRoutes WHERE driver = @driver ORDER BY order_in_the_trip ASC"))
+            getRequestedTripValues(requestedTrip, requestedRouteCoordinatesX, requestedRouteCoordinatesY, requestedRouteIDS, con);
+            using (SqlCommand cmd = new SqlCommand("SELECT * FROM getLeftRoutes WHERE driver = " +
+                "@driver ORDER BY order_in_the_trip ASC"))
             {
                 cmd.Parameters.AddWithValue("@driver", driver);
                 cmd.Connection = con;
@@ -1174,8 +1165,11 @@ public class SqlConClass : System.Web.Services.WebService
 
                 while (dr.Read())
                 {
+                    merged_trip_id = dr.GetInt32(2);
                     currentRouteCoordinatesX.Add(dr.GetInt32(0));
                     currentRouteCoordinatesY.Add(dr.GetInt32(1));
+                    currentRouteIDS.Add(dr.GetInt32(3));
+                    driverLoc = dr.GetInt32(6);
                 }
                 dr.Close();
                 //if currently car is empty
@@ -1186,13 +1180,142 @@ public class SqlConClass : System.Web.Services.WebService
                     return;
                 }
             }
-            //car is partly filled and user automatically chooses driver
+
+            mergeCurrentAndRequested(requestedTrip, requestedRouteCoordinatesX, requestedRouteCoordinatesY, currentRouteCoordinatesX, currentRouteCoordinatesY, requestedRouteIDS, currentRouteIDS, merged_trip_id, driverLoc, con);
+            con.Close();
         }
+    }
+
+    private static void getRequestedTripValues(string requestedTrip, List<int> requestedRouteCoordinatesX, List<int> requestedRouteCoordinatesY, List<int> requestedRouteIDS, SqlConnection con)
+    {
+        using (SqlCommand cmd = new SqlCommand("SELECT * FROM requestedRoutesWithCoordinates " +
+                        "WHERE trip_id = @trip ORDER BY order_in_the_trip ASC"))
+        {
+            cmd.Parameters.AddWithValue("@trip", requestedTrip);
+            cmd.Connection = con;
+            SqlDataReader dr = cmd.ExecuteReader();
+
+            while (dr.Read())
+            {
+                requestedRouteCoordinatesX.Add(dr.GetInt32(0));
+                requestedRouteCoordinatesY.Add(dr.GetInt32(1));
+                requestedRouteIDS.Add(dr.GetInt32(3));
+            }
+            dr.Close();
+        }
+    }
+
+    public void chooseDriver(string driver, string trip_id)
+    {
+        List<int> requestedRouteCoordinatesX = new List<int>();
+        List<int> requestedRouteCoordinatesY = new List<int>();
+        List<int> requestedRouteIDS = new List<int>();
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            con.Open();
+            getRequestedTripValues(trip_id, requestedRouteCoordinatesX, requestedRouteCoordinatesY, requestedRouteIDS, con);
+            createNewMergedTrip(driver, trip_id, requestedRouteIDS, con);
+            con.Close();
+        }
+    }
+
+    private void mergeCurrentAndRequested(string requestedTrip, List<int> requestedRouteCoordinatesX, List<int> requestedRouteCoordinatesY, List<int> currentRouteCoordinatesX, List<int> currentRouteCoordinatesY, List<int> requestedRouteIDS, List<int> currentRouteIDS, int merged_trip_id, int driverLoc, SqlConnection con)
+    {
+        //car is partly filled and user automatically chooses driver
+        List<int> newRoute = getRoute(requestedRouteCoordinatesX, requestedRouteCoordinatesY, currentRouteCoordinatesX, currentRouteCoordinatesY, currentRouteIDS, requestedRouteIDS);
+        for (int i = 0; i < newRoute.Count; i++)
+        {
+            if (i <= currentRouteIDS.Count)
+            {
+                using (SqlCommand cmd = new SqlCommand
+                    ("UPDATE Driver_Destinations " +
+                    " SET Location_ID = @newLoc" +
+                    " WHERE Order_in_the_Trip = @order " +
+                    " AND Merged_Trip_ID = @mergedTrip"))
+                {
+                    cmd.Parameters.AddWithValue("@newLoc", newRoute[i]);
+                    cmd.Parameters.AddWithValue("@order", i + driverLoc);
+                    cmd.Parameters.AddWithValue("@mergedTrip", merged_trip_id);
+                    cmd.Connection = con;
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            else
+            {
+                using (SqlCommand cmd = new SqlCommand
+                    ("INSERT INTO Driver_Destinations " +
+                    " VALUES( @mergedTrip, @newLoc, @order)"))
+                {
+                    cmd.Parameters.AddWithValue("@newLoc", newRoute[i]);
+                    cmd.Parameters.AddWithValue("@order", i + driverLoc);
+                    cmd.Parameters.AddWithValue("@mergedTrip", merged_trip_id);
+                    cmd.Connection = con;
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            using (SqlCommand cmd = new SqlCommand
+                    ("UPDATE Trip " +
+                    " SET merged_trip_id = @mergedID" +
+                    " WHERE trip_id = @trip "))
+            {
+                cmd.Parameters.AddWithValue("@mergedID", merged_trip_id);
+                cmd.Parameters.AddWithValue("@trip", requestedTrip);
+                cmd.Connection = con;
+                cmd.ExecuteNonQuery();
+            }
+        }
+    }
+
+    private List<int> getRoute(List<int> requestedRouteCoordinatesX, List<int> requestedRouteCoordinatesY, List<int> currentRouteCoordinatesX, List<int> currentRouteCoordinatesY, List<int> currentRouteIDS, List<int> requestedRouteIDS)
+    {
+        int currentX = currentRouteCoordinatesX[0];
+        int currentY = currentRouteCoordinatesY[0];
+        List<int> merged = new List<int>();
+        merged.Add(currentRouteIDS[0]);
+        int iterC = 1; int iterR = 0;
+        while (iterC < currentRouteCoordinatesY.Count && iterR < requestedRouteCoordinatesY.Count)
+        {
+            //going to same place
+            if (currentRouteCoordinatesY[iterC] == requestedRouteCoordinatesY[iterR]
+                && currentRouteCoordinatesX[iterC] == requestedRouteCoordinatesX[iterR])
+            {
+                currentX = currentRouteCoordinatesX[iterC];
+                currentY = currentRouteCoordinatesY[iterC];
+                iterC++; iterR++;
+                merged.Add(currentRouteIDS[iterC]);
+                continue;
+            }
+
+
+            int distCurX = Math.Abs(currentRouteCoordinatesX[iterC] - currentX);
+            int distCurY = Math.Abs(currentRouteCoordinatesY[iterC] - currentY);
+            int distReqX = Math.Abs(requestedRouteCoordinatesX[iterR] - currentX);
+            int distReqY = Math.Abs(requestedRouteCoordinatesY[iterR] - currentY);
+            if (distReqX < distCurX && distReqY < distCurY)
+            {
+                currentX = requestedRouteCoordinatesX[iterR];
+                currentY = requestedRouteCoordinatesY[iterR];
+                merged.Add(requestedRouteIDS[iterR]);
+                iterR++;
+            }
+            else if (distReqX > distCurX && distReqY > distCurY)
+            {
+                currentX = currentRouteCoordinatesX[iterC];
+                currentY = currentRouteCoordinatesY[iterC];
+                merged.Add(currentRouteIDS[iterC]);
+                iterC++;
+            }
+        }
+        while (iterC < currentRouteCoordinatesY.Count)
+            merged.Add(currentRouteIDS[iterC++]);
+        while (iterR < requestedRouteIDS.Count)
+            merged.Add(requestedRouteIDS[iterR]);
+        return merged;
     }
 
     private void createPossibleNewMergedTrip(string driver, string requestedTrip, List<int> requestedRouteIDS)
     {
-        //car is empty, either user picked do merge or do not
+        //car is empty, either user picked auto choose driver or not
         Boolean auto_choose;
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {
@@ -1220,40 +1343,44 @@ public class SqlConClass : System.Web.Services.WebService
             }
             else
             {
-                string plate;
-                using (SqlCommand cmdPlate = new SqlCommand(
-                "SELECT Plate_Number From Taxi WHERE Driver_ID = @E_Mail"))
-                {
-                    cmdPlate.Parameters.AddWithValue("@E_Mail", driver);
-                    cmdPlate.Parameters.AddWithValue("@trip_id", requestedTrip);
-                    cmdPlate.Connection = con;
-                    SqlDataReader dr = cmdPlate.ExecuteReader();
-                    dr.Read();
-                    plate = dr.GetString(0);
-                    dr.Close();
-                }
-                SqlCommand cmd = new SqlCommand("BEGIN TRANSACTION ");
-                cmd.CommandText += "DECLARE @newId INT ";
-                cmd.CommandText += "INSERT INTO Merged_Trip (E_Mail, Plate_Number, Driver_Position)" +
-                    " VALUES (@driver, @plate, 0)";
-                cmd.Parameters.AddWithValue("@driver", driver);
-                cmd.Parameters.AddWithValue("@plate", plate);
-                cmd.CommandText += " SELECT @newId = SCOPE_IDENTITY() ";
-                for (int i = 0; i < requestedRouteIDS.Count; i++)
-                {
-                    cmd.CommandText += " INSERT INTO Driver_Destinations" +
-                        " VALUES (@newId, @locID" + i+ ", @order" + i + ") ";
-                    cmd.Parameters.AddWithValue("@locID" + i, requestedRouteIDS[i]);
-                    cmd.Parameters.AddWithValue("@order" + i, i);
-                }
-                cmd.CommandText += " UPDATE Trip SET merged_trip_id = @newId WHERE trip_id = @trip ";
-                cmd.Parameters.AddWithValue("@trip", requestedTrip);
-                cmd.CommandText += " COMMIT ";
-                cmd.Connection = con;
-                cmd.ExecuteNonQuery();
+                createNewMergedTrip(driver, requestedTrip, requestedRouteIDS, con);
             }
             con.Close();
         }
     }
 
+    private static void createNewMergedTrip(string driver, string requestedTrip, List<int> requestedRouteIDS, SqlConnection con)
+    {
+        string plate;
+        using (SqlCommand cmdPlate = new SqlCommand(
+        "SELECT Plate_Number From Taxi WHERE Driver_ID = @E_Mail"))
+        {
+            cmdPlate.Parameters.AddWithValue("@E_Mail", driver);
+            cmdPlate.Parameters.AddWithValue("@trip_id", requestedTrip);
+            cmdPlate.Connection = con;
+            SqlDataReader dr = cmdPlate.ExecuteReader();
+            dr.Read();
+            plate = dr.GetString(0);
+            dr.Close();
+        }
+        SqlCommand cmd = new SqlCommand("BEGIN TRANSACTION ");
+        cmd.CommandText += "DECLARE @newId INT ";
+        cmd.CommandText += "INSERT INTO Merged_Trip (E_Mail, Plate_Number, Driver_Position)" +
+            " VALUES (@driver, @plate, 0)";
+        cmd.Parameters.AddWithValue("@driver", driver);
+        cmd.Parameters.AddWithValue("@plate", plate);
+        cmd.CommandText += " SELECT @newId = SCOPE_IDENTITY() ";
+        for (int i = 0; i < requestedRouteIDS.Count; i++)
+        {
+            cmd.CommandText += " INSERT INTO Driver_Destinations" +
+                " VALUES (@newId, @locID" + i + ", @order" + i + ") ";
+            cmd.Parameters.AddWithValue("@locID" + i, requestedRouteIDS[i]);
+            cmd.Parameters.AddWithValue("@order" + i, i);
+        }
+        cmd.CommandText += " UPDATE Trip SET merged_trip_id = @newId WHERE trip_id = @trip ";
+        cmd.Parameters.AddWithValue("@trip", requestedTrip);
+        cmd.CommandText += " COMMIT ";
+        cmd.Connection = con;
+        cmd.ExecuteNonQuery();
+    }
 }

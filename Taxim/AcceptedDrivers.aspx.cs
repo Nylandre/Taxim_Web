@@ -17,5 +17,8 @@ public partial class AcceptedDrivers: System.Web.UI.Page
     protected void mergeTrip(object sender, EventArgs e)
     {
         Response.Redirect("google.com");
+        SqlConClass sq = new SqlConClass();
+        sq.chooseDriver();
+        //buraya doğru parametreleri verin, driver id ile trip id
     }
 }
