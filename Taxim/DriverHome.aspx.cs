@@ -31,7 +31,7 @@ public partial class DriverHome : System.Web.UI.Page
 
     protected void Button1_Click(object sender, EventArgs e)
     {
-
+        Response.Redirect("logout.aspx");
     }
 
 
