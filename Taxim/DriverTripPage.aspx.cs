@@ -11,6 +11,6 @@ public partial class DriverTripPage : System.Web.UI.Page
     {
         SqlConClass so = new SqlConClass();
         GridView1.DataSource = so.FilterDriverTrips(Session["E_Mail"].ToString());
-        GridView1.DataBind();
+        GridView1.DataBind();//ehe
     }
 }
