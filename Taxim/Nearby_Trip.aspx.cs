@@ -17,7 +17,7 @@ public partial class Default2 : System.Web.UI.Page
         bf.CommandName = "drive";
         GridView1.Columns.Clear();
         GridView1.Columns.Add(bf);
-        sq.getNearbyTripsForDriver(GridView1, Session["E_Mail"].ToString();
+        sq.getNearbyTripsForDriver(GridView1, Session["E_Mail"].ToString());
         GridView1.RowCommand += driveRowCommand;
     }
 
