@@ -931,7 +931,7 @@ public class SqlConClass : System.Web.Services.WebService
                 cmd.Parameters.AddWithValue("@pT", SqlDbType.Char).Value= paymentMethod.ToCharArray()[1];
                 cmd.Parameters.AddWithValue("@cD", SqlDbType.Bit).Value = choose;
                 cmd.Parameters.AddWithValue("@sD", SqlDbType.DateTime).Value = DateTime.Now.AddMinutes(minuteOffset);
-                cmd.Parameters.AddWithValue("@rID", /*Session["E_Mail"]*/"AnarrAmon271@vahiymail.com");
+                cmd.Parameters.AddWithValue("@rID", Session["E_Mail"]);
                 cmd.Connection = con;
                 cmd.ExecuteNonQuery();
             }
@@ -979,15 +979,26 @@ public class SqlConClass : System.Web.Services.WebService
                     cmd.ExecuteNonQuery();
                 }
             }
-            con.Close();
+            
             int coefficient = 1;
             if (Luxury == 'L')
                 coefficient = 3;
             else if (Luxury == 'Q')
                 coefficient = 2;
+            int val;
             if (noOtherRider)
-                return (int)(totalDistance * coefficient * 0.75);
-            else return totalDistance * coefficient;
+                val = (int)(totalDistance * coefficient * 0.75);
+            else val = totalDistance * coefficient;
+            using (SqlCommand cmd = new SqlCommand("UPDATE Trip " +
+                                    " SET Price = @trip"))
+            {
+                cmd.Parameters.AddWithValue("@trip", tripID);
+                cmd.Connection = con;
+                cmd.ExecuteNonQuery();
+            }
+
+            con.Close();
+            return val;
         }
     }
 
@@ -1076,6 +1087,7 @@ public class SqlConClass : System.Web.Services.WebService
                 currentX = currentRouteCoordinatesX[iterC];
                 currentY = currentRouteCoordinatesY[iterC];
                 iterC++; iterR++;
+                continue;
             }
 
             //not going to same direction
@@ -1162,6 +1174,7 @@ public class SqlConClass : System.Web.Services.WebService
         Boolean auto_choose;
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {
+            con.Open();
             using (SqlCommand cmd = new SqlCommand(
             "SELECT * FROM Trip WHERE trip_id = @trip AND Choose_Driver_Automatically = 1"))
             {
@@ -1191,28 +1204,33 @@ public class SqlConClass : System.Web.Services.WebService
                 {
                     cmdPlate.Parameters.AddWithValue("@E_Mail", driver);
                     cmdPlate.Parameters.AddWithValue("@trip_id", requestedTrip);
+                    cmdPlate.Connection = con;
                     SqlDataReader dr = cmdPlate.ExecuteReader();
                     dr.Read();
                     plate = dr.GetString(0);
                     dr.Close();
                 }
                 SqlCommand cmd = new SqlCommand("BEGIN TRANSACTION ");
+                cmd.CommandText += "DECLARE @newId INT ";
                 cmd.CommandText += "INSERT INTO Merged_Trip (E_Mail, Plate_Number, Driver_Position)" +
                     " VALUES (@driver, @plate, 0)";
                 cmd.Parameters.AddWithValue("@driver", driver);
                 cmd.Parameters.AddWithValue("@plate", plate);
-                for(int i = 0; i < requestedRouteIDS.Count; i++)
+                cmd.CommandText += " SELECT @newId = SCOPE_IDENTITY() ";
+                for (int i = 0; i < requestedRouteIDS.Count; i++)
                 {
                     cmd.CommandText += " INSERT INTO Driver_Destinations" +
-                        " VALUES (SELECT @@IDENTITY, @locID, @order) ";
-                    cmd.Parameters.AddWithValue("@locID", requestedRouteIDS[i]);
-                    cmd.Parameters.AddWithValue("@order", i);
+                        " VALUES (@newId, @locID" + i+ ", @order" + i + ") ";
+                    cmd.Parameters.AddWithValue("@locID" + i, requestedRouteIDS[i]);
+                    cmd.Parameters.AddWithValue("@order" + i, i);
                 }
-                cmd.CommandText += " UPDATE Trip SET Merged_Trip_ID = (SELECT @@IDENTITY) WHERE trip_id = @trip ";
+                cmd.CommandText += " UPDATE Trip SET merged_trip_id = @newId WHERE trip_id = @trip ";
                 cmd.Parameters.AddWithValue("@trip", requestedTrip);
                 cmd.CommandText += " COMMIT ";
+                cmd.Connection = con;
                 cmd.ExecuteNonQuery();
             }
+            con.Close();
         }
     }
 
