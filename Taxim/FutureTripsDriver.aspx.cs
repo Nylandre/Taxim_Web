@@ -27,7 +27,6 @@ GridViewCommandEventArgs e)
             GridViewRow row = GridView1.Rows[index];
 
             int mId = Int32.Parse(row.Cells[1].Text);
-            Label1.Text = ""+mId;
             Session["RatedMTID"] = mId;
             Response.Redirect("RateRider.aspx");
 
