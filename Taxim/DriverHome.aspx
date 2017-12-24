@@ -24,8 +24,9 @@
 			<asp:Button ID="Button5" runat="server" OnClick="Button5_Click" Text="Profile Page" />
 		</p>
 		<p>
-			<asp:Button ID="Button1" runat="server"  Text="Log Out" OnClick="Button1_Click" />
+			<asp:Button ID="Button8" runat="server" OnClick="Button8_Click" Text="Show/Edit my Car" />
 		</p>
+			<asp:Button ID="Button1" runat="server"  Text="Log Out" OnClick="Button1_Click" />
     </form>
 </body>
 </html>

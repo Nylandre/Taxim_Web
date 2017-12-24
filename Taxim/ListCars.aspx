@@ -39,7 +39,6 @@
 							<asp:Label ID="Label1" runat="server" Text='<%# Bind("Model_Name") %>'></asp:Label>
 						</ItemTemplate>
 					</asp:TemplateField>
-					<asp:ButtonField CommandName="Delete" HeaderText="Delete Car" ShowHeader="True" Text="Delete" />
 					<asp:CommandField ShowEditButton="True" />
 				</Columns>
 			</asp:GridView>
