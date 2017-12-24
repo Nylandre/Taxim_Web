@@ -28,9 +28,9 @@ public partial class Create_Trip : System.Web.UI.Page
     
     protected void RadioButtonList1_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (RadioButtonList1.SelectedValue.Equals(RadioButtonList1.Items[0]))
+        if (RadioButtonList1.SelectedIndex == 0)
             TextBox4.Enabled = false;
-        else 
+        else if(RadioButtonList1.SelectedIndex == 1)
             TextBox4.Enabled = true;
         //if user chooses to order taxi now, textbox gets disabled
     }
