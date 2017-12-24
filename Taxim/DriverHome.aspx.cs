@@ -22,18 +22,26 @@ public partial class DriverHome : System.Web.UI.Page
     {
         Response.Redirect("NearbyTrips.aspx");
     }
+    
 
-    protected void Button3_Click(object sender, EventArgs e)
-    {
-        Response.Redirect("FutureTripsDriver.aspx");
-    }
     protected void Button2_Click(object sender, EventArgs e)
     {
-        Response.Redirect("FutureTripsDriver.aspx");
+        Response.Redirect("DriverTripPage.aspx");
     }
 
     protected void Button1_Click(object sender, EventArgs e)
     {
-        Response.Redirect("logout.aspx");
+
+    }
+
+
+    protected void Button6_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("FutureTripsDriver.aspx");
+    }
+
+    protected void Button7_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("PaymentInfo.aspx");
     }
 }

@@ -44,4 +44,9 @@ public partial class Home : System.Web.UI.Page
     {
         Response.Redirect("FutureTripsRider.aspx");
     }
+
+    protected void Button7_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("PaymentInfo.aspx");
+    }
 }

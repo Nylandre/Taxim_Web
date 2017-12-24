@@ -12,16 +12,19 @@
         </div>
     	<asp:Button ID="Button4" runat="server" OnClick="Button4_Click" Text="Near by Trips" />
 		<p>
-			<asp:Button ID="Button3" runat="server" OnClick="Button3_Click" Text="My Planned Trips" />
+			<asp:Button ID="Button2" runat="server" Text="My Previous Trips" OnClick="Button2_Click" />
 		</p>
-		<p>
-			<asp:Button ID="Button2" runat="server" OnClick="Button2_Click" Text="My Previous Trips" />
+        <p>
+			<asp:Button ID="Button6" runat="server" OnClick="Button6_Click" Text="Done/Unrated Trips" />
+		</p>
+        <p>
+			<asp:Button ID="Button7" runat="server" OnClick="Button7_Click" Text="Payment Information" />
 		</p>
 		<p>
 			<asp:Button ID="Button5" runat="server" OnClick="Button5_Click" Text="Profile Page" />
 		</p>
 		<p>
-			<asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Log Out" />
+			<asp:Button ID="Button1" runat="server"  Text="Log Out" OnClick="Button1_Click" />
 		</p>
     </form>
 </body>

@@ -21,6 +21,7 @@
         <br />
         Expiration Date:<asp:Calendar ID="exp_date" runat="server" OnSelectionChanged="Calendar1_SelectionChanged"></asp:Calendar>
         <br />
+        <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
         <br />
         CVC Code:<asp:TextBox ID="cvc" runat="server"></asp:TextBox>
         <br />
@@ -28,6 +29,7 @@
         <br />
         <asp:Button ID="add_card" runat="server" Text="Add Credit Card" OnClick="Button1_Click" />
         <br />
+        <asp:Button ID="Button1" runat="server" OnClick="Button1_Click1" Text="Back" />
         <br />
         <br />
     
