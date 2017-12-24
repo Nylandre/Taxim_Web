@@ -541,7 +541,7 @@ public class SqlConClass : System.Web.Services.WebService
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {
-            using (SqlCommand cmd = new SqlCommand("select Loc.Name,UserTable.E_Mail,Phone_Number,Age from UserTable join Accept on UserTable.E_Mail = Accept.E_Mail  join Requested_Destinations on Requested_Destinations.trip_id = Accept.trip_id join Loc on Loc.Location_ID = Requested_Destinations.Location_ID where Accept.trip_id in (select Trip.trip_id from Trip where requester_id = @email )"))
+            using (SqlCommand cmd = new SqlCommand("showAcceptedDrivers @email"))
             {
                 cmd.Parameters.AddWithValue("@email", email);
                 cmd.Connection = con;

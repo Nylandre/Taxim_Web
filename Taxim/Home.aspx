@@ -12,7 +12,7 @@
         </div>
     	<asp:Button ID="Button4" runat="server" OnClick="Button4_Click" Text="Create Trip" />
 		<p>
-			<asp:Button ID="Button3" runat="server" OnClick="Button3_Click" Text="My Planned Trips" />
+			<asp:Button ID="Button3" runat="server" OnClick="Button3_Click" Text="Drivers That Accepted My Trip Requests" Width="245px" />
 		</p>
 		<p>
 			<asp:Button ID="Button2" runat="server" OnClick="Button2_Click" Text="My Previous Trips" />
