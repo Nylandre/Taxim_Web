@@ -9,8 +9,14 @@ public partial class Home : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (Session["User_Type"].ToString() == null)
+            Response.Redirect("SignIn.aspx");
+        if (Session["User_Type"].ToString() == "driver") //adamın driver girişi yaptığı halde adresi değiştirerek girmesini engellemek
+            Response.Redirect("DriverHome.aspx");
         if (Session["E_Mail"] != null)
-            Response.Write("Welcome "+Session["E_Mail"]);    
+            Response.Write("Welcome "+Session["E_Mail"]);
+
+       
     }
 
     protected void Button1_Click(object sender, EventArgs e)
