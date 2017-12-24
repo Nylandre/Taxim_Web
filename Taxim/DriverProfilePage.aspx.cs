@@ -15,7 +15,7 @@ public partial class DriverProfilePage : System.Web.UI.Page
         if (!IsPostBack)
         {
             SqlConClass sql = new SqlConClass();
-            string e_mail = "VeggrAmy18@hotmail.com";
+            string e_mail = "AndvariCrocell290@vahiymail.com";
             //DataTable dt = sql.GetDriverProfile(Session["E_mail"].ToString());
             DataTable dt = sql.GetDriverProfile(e_mail);
 
@@ -26,7 +26,6 @@ public partial class DriverProfilePage : System.Web.UI.Page
                 language.Text = dr["Language"].ToString();
                 phone_no.Text = dr["Phone_No"].ToString();
                 location.Text = dr["Current_Location"].ToString();
-
             }
         }
     }
@@ -34,7 +33,7 @@ public partial class DriverProfilePage : System.Web.UI.Page
     protected void save_button_Click(object sender, EventArgs e)
     {
         SqlConClass sql = new SqlConClass();
-        string e_mail = "VeggrAmy18@hotmail.com";//= Session["E_mail"].ToString()
+        string e_mail = "AndvariCrocell290@vahiymail.com";//= Session["E_mail"].ToString()
         sql.updateDriverData(e_mail, first_name.Text, last_name.Text, language.Text, phone_no.Text,Int32.Parse(location.Text));
     }
 }

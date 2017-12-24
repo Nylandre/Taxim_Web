@@ -319,7 +319,7 @@ public class SqlConClass : System.Web.Services.WebService
             using (SqlCommand cmd = new SqlCommand("sp_UpdateDriverInfo @firstname,@lastname,@language,@phone_no,@e_mail,@loc"))
             {
                 cmd.Parameters.AddWithValue("@e_mail", (e_mail == null || e_mail.Equals("")) ? Convert.DBNull : e_mail);
-                cmd.Parameters.AddWithValue("@phone_no", (phone_no == null || phone_no.Equals("")) ? Convert.DBNull : phone_no);
+                cmd.Parameters.AddWithValue("@phone_no", (phone_no == null || phone_no.Equals("")) ? "123456789123456" : phone_no);//dummy phone number because dataabse does not accept null
                 cmd.Parameters.AddWithValue("@firstname", (firstname == null || firstname.Equals("")) ? Convert.DBNull : firstname);
                 cmd.Parameters.AddWithValue("@lastname", (lastname == null || lastname.Equals("")) ? Convert.DBNull : lastname);
                 cmd.Parameters.AddWithValue("@language", (language == null || language.Equals("")) ? Convert.DBNull : language);
@@ -363,7 +363,7 @@ public class SqlConClass : System.Web.Services.WebService
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {//Does not work do not why yet!!
-            using (SqlCommand cmd = new SqlCommand("SELECT * FROM UserTable inner join Driver on UserTable.EMail = Driver.E_Mail WHERE E_Mail=@email"))
+            using (SqlCommand cmd = new SqlCommand("SELECT * FROM UserTable inner join Driver on UserTable.E_Mail = Driver.E_Mail WHERE UserTable.E_Mail=@email"))
             {
                 cmd.Parameters.AddWithValue("@email", email);
 
