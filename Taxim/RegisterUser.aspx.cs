@@ -25,8 +25,8 @@ public partial class Test: System.Web.UI.Page
         string age = Text7.Value;
        
       
-        bool res = sqlConClass.registerUser(mail, phone, fname, lname, personal_info, pass, age);
-        sqlConClass.registerCustomer(mail);
+        bool res = sqlConClass.registerCustomer(mail, phone, fname, lname, personal_info, pass, age);
+        
         Name.Text = mail;
         Response.Redirect("SignIn.aspx");
     }
