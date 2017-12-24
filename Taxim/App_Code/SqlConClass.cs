@@ -311,12 +311,35 @@ public class SqlConClass : System.Web.Services.WebService
         }
 
     }
-     
+    //Editing the driver data
+    public bool updateDriverData(string e_mail, string firstname, string lastname, string language, string phone_no,int loc)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("sp_UpdateDriverInfo @firstname,@lastname,@language,@phone_no,@e_mail,@loc"))
+            {
+                cmd.Parameters.AddWithValue("@e_mail", (e_mail == null || e_mail.Equals("")) ? Convert.DBNull : e_mail);
+                cmd.Parameters.AddWithValue("@phone_no", (phone_no == null || phone_no.Equals("")) ? "123456789123456" : phone_no);//dummy phone number because dataabse does not accept null
+                cmd.Parameters.AddWithValue("@firstname", (firstname == null || firstname.Equals("")) ? Convert.DBNull : firstname);
+                cmd.Parameters.AddWithValue("@lastname", (lastname == null || lastname.Equals("")) ? Convert.DBNull : lastname);
+                cmd.Parameters.AddWithValue("@language", (language == null || language.Equals("")) ? Convert.DBNull : language);
+                cmd.Parameters.AddWithValue("@loc", loc);
+
+
+                cmd.Connection = con;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+                return true;
+            }
+        }
+
+    }
     //Printing the user data
     public DataTable GetUserProfile(string email)
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
-        {//Does not work do not why yet!!
+        {
             using (SqlCommand cmd = new SqlCommand("SELECT * FROM UserTable WHERE E_Mail=@email"))
             {
                 cmd.Parameters.AddWithValue("@email", email);
@@ -335,7 +358,29 @@ public class SqlConClass : System.Web.Services.WebService
             }
         }
     }
+    //Printing the user data
+    public DataTable GetDriverProfile(string email)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {//Does not work do not why yet!!
+            using (SqlCommand cmd = new SqlCommand("SELECT * FROM UserTable inner join Driver on UserTable.E_Mail = Driver.E_Mail WHERE UserTable.E_Mail=@email"))
+            {
+                cmd.Parameters.AddWithValue("@email", email);
 
+                using (SqlDataAdapter sda = new SqlDataAdapter())
+                {
+                    cmd.Connection = con;
+                    sda.SelectCommand = cmd;
+                    using (DataTable dt = new DataTable())
+                    {
+                        dt.TableName = "UserTable";
+                        sda.Fill(dt);
+                        return dt;
+                    }
+                }
+            }
+        }
+    }
     [System.Web.Services.WebMethod(BufferResponse = true)]
     public bool registerCustomer(string e_mail)
     {
