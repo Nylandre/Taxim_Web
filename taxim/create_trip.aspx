@@ -19,7 +19,7 @@
         <asp:Image ID="Image1" runat="server" Height="98px" Width="146px" />
         <asp:TextBox ID="TextBox2" runat="server" AutoPostBack="True" Height="96px" TextMode="MultiLine" ToolTip="Enter the each destination point in an ordered way and in a separate line" Width="299px"></asp:TextBox>
         <p>
-            <asp:CheckBox ID="CheckBox1" runat="server" OnCheckedChanged="CheckBox1_CheckedChanged" Text="I can travel with other passengers" />
+            <asp:CheckBox ID="CheckBox1" runat="server" OnCheckedChanged="CheckBox1_CheckedChanged" Text="I can travel with other passengers" AutoPostBack="true" />
             <asp:CheckBox ID="CheckBox2" runat="server" Text="Choose the driver automatically for me" />
         </p>
         <p>
@@ -38,12 +38,12 @@
             <asp:ListItem>Credit Card</asp:ListItem>
         </asp:DropDownList>
         <p>
-            <asp:RadioButtonList ID="RadioButtonList1" runat="server" OnSelectedIndexChanged="RadioButtonList1_SelectedIndexChanged">
+            <asp:RadioButtonList ID="RadioButtonList1" runat="server" OnSelectedIndexChanged="RadioButtonList1_SelectedIndexChanged" AutoPostBack="true">
                 <asp:ListItem Selected="True">Call the Taxi now</asp:ListItem>
                 <asp:ListItem>Reserve the Taxi For a Future Time</asp:ListItem>
             </asp:RadioButtonList>
             <asp:Label ID="Label4" runat="server" Text="Call after this many minutes:"></asp:Label>
-            <asp:TextBox ID="TextBox4" runat="server" Enabled="False" TextMode="Number">30</asp:TextBox>
+            <asp:TextBox ID="TextBox4" runat="server" Enabled="False" TextMode="Number" AutoPostBack="true">30</asp:TextBox>
             </p>
         <p>
             <asp:Button ID="Button1" runat="server" Text="Call the Taxi!" OnClick="Button1_Click" />
