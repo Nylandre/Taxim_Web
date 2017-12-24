@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data.SqlClient;
 using System.Data;
+using System.Web.UI.WebControls;
 /// <summary>
 /// Summary description for Class1
 /// </summary>
@@ -860,6 +861,35 @@ public class SqlConClass : System.Web.Services.WebService
             if (noOtherRider)
                 return (int)(totalDistance * coefficient * 0.75);
             else return totalDistance * coefficient;
+        }
+    }
+
+    public void getNearbyTripsForDriver(GridView grid)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.CommandText = "getNearbyTrips";
+            cmd.Parameters.Add("@emailDriver", SqlDbType.VarChar).Value = "HlévargrAndromalius292@gmail.com";
+
+            cmd.Connection = con;
+            try
+            {
+                con.Open();
+                grid.EmptyDataText = "No Records Found";
+                grid.DataSource = cmd.ExecuteReader();
+                grid.DataBind();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                con.Close();
+                con.Dispose();
+            }
         }
     }
 }
