@@ -21,6 +21,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Taxim(1)", "Taxim\", "{FC6F
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "55860"
+		SlnRelativePath = "Taxim\"
 	EndProjectSection
 EndProject
 Global
