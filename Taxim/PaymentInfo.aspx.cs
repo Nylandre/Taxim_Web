@@ -13,9 +13,8 @@ public partial class PaymentInfo : System.Web.UI.Page
         
         if (!this.IsPostBack)
         {
-            //this.username.Text = Session["E_Mail"].ToString();
-            //string user_name = this.username.Text;
-            string user_name = "VeggrAmy18@hotmail.com";
+            string user_name = Session["E_Mail"].ToString();
+            //string user_name = "VeggrAmy18@hotmail.com";
             string command = SqlDataSource1.SelectCommand; // added just for debug purpose
             SqlDataSource1.SelectCommand = "SELECT [Credit_Card_Number], [Card_Owner_Name], [Exp_Month], [Exp_Year] FROM [Credit_Card_Info] WHERE Card_Owner_Name = '"+user_name+"'";
               SqlDataSource1.DataBind();
@@ -35,4 +34,10 @@ public partial class PaymentInfo : System.Web.UI.Page
 
 
 
+
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        Session["PreviousPage"] = "PaymentInfo.aspx";
+        Response.Redirect("AddCreditCard.aspx");
+    }
 }

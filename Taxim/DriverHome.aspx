@@ -17,6 +17,9 @@
         <p>
 			<asp:Button ID="Button6" runat="server" OnClick="Button6_Click" Text="Done/Unrated Trips" />
 		</p>
+        <p>
+			<asp:Button ID="Button7" runat="server" OnClick="Button7_Click" Text="Payment Information" />
+		</p>
 		<p>
 			<asp:Button ID="Button5" runat="server" OnClick="Button5_Click" Text="Profile Page" />
 		</p>

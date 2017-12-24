@@ -39,4 +39,9 @@ public partial class DriverHome : System.Web.UI.Page
     {
         Response.Redirect("FutureTripsDriver.aspx");
     }
+
+    protected void Button7_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("PaymentInfo.aspx");
+    }
 }

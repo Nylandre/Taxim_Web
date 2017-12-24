@@ -14,6 +14,7 @@
         Payment Methods of User:
         <asp:Label ID="username" runat="server" Text=""></asp:Label>
         <br />
+        <br />
         <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="Credit_Card_Number" DataSourceID="SqlDataSource1">
             <Columns>
                 <asp:CommandField ShowDeleteButton="True" />
@@ -42,6 +43,7 @@
         </asp:SqlDataSource>
         <br />
         <br />
+        <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Add Credit Card" />
         <br />
         <br />
     
