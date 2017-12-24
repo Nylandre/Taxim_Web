@@ -20,7 +20,7 @@ public partial class DriverHome : System.Web.UI.Page
 
     protected void Button4_Click(object sender, EventArgs e)
     {
-        Response.Redirect("NearbyTrips.aspx");
+        Response.Redirect("Nearby_Trip.aspx");
     }
     
 
