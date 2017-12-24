@@ -150,6 +150,34 @@ public class SqlConClass : System.Web.Services.WebService
         }
     }
 
+    public DataTable FilterDriverTrips(string email)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("select * from Merged_Trip where E_Mail=@email and Rating is not NULL"))
+            {
+                cmd.Parameters.AddWithValue("@email", email);
+
+                cmd.Connection = con;
+                con.Open();
+
+
+                using (SqlDataAdapter sda = new SqlDataAdapter())
+                {
+                    cmd.Connection = con;
+                    sda.SelectCommand = cmd;
+                    using (DataTable dt = new DataTable())
+                    {
+                        dt.TableName = "UserTrips";
+                        sda.Fill(dt);
+                        return dt;
+                    }
+                }
+
+            }
+        }
+    }
+
     public void RateDriver (int mergedTripID, int rating, string comment)
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
