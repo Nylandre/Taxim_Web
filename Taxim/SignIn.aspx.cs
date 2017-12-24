@@ -24,7 +24,7 @@ public partial class SignIn : System.Web.UI.Page
         {
             Session["E_Mail"] = dr["E_Mail"].ToString();
             Session["User_Type"] = "customer";
-            Response.Redirect("CustomerHome.aspx");
+            Response.Redirect("Home.aspx");
         }
     }
 
