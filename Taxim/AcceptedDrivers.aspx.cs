@@ -13,4 +13,9 @@ public partial class AcceptedDrivers: System.Web.UI.Page
         GridView1.DataSource = so.showAcceptedDrivers(Session["E_Mail"].ToString());
         GridView1.DataBind();
     }
+
+    protected void mergeTrip(object sender, EventArgs e)
+    {
+        Response.Redirect("google.com");
+    }
 }
