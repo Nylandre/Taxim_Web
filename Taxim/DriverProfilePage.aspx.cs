@@ -8,7 +8,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 
-public partial class ProfilePage : System.Web.UI.Page
+public partial class DriverProfilePage : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -16,8 +16,8 @@ public partial class ProfilePage : System.Web.UI.Page
         {
             SqlConClass sql = new SqlConClass();
             string e_mail = "VeggrAmy18@hotmail.com";
-            //DataTable dt = sql.GetUserProfile(Session["E_mail"].ToString());
-            DataTable dt = sql.GetUserProfile(e_mail);
+            //DataTable dt = sql.GetDriverProfile(Session["E_mail"].ToString());
+            DataTable dt = sql.GetDriverProfile(e_mail);
 
             foreach (DataRow dr in dt.Rows)
             {
@@ -25,24 +25,16 @@ public partial class ProfilePage : System.Web.UI.Page
                 last_name.Text = dr["LastName"].ToString();
                 language.Text = dr["Language"].ToString();
                 phone_no.Text = dr["Phone_No"].ToString();
+                location.Text = dr["Current_Location"].ToString();
 
             }
         }
     }
-    //Edit function
-
 
     protected void save_button_Click(object sender, EventArgs e)
     {
         SqlConClass sql = new SqlConClass();
-        string e_mail = "VeggrAmy18@hotmail.com";
-        sql.updateUserData(e_mail,first_name.Text, last_name.Text, language.Text, phone_no.Text);
-        first_name.Text = "";
-        last_name.Text = "";
-        language.Text = "";
-        phone_no.Text = "";
-
-
+        string e_mail = "VeggrAmy18@hotmail.com";//= Session["E_mail"].ToString()
+        sql.updateDriverData(e_mail, first_name.Text, last_name.Text, language.Text, phone_no.Text,Int32.Parse(location.Text));
     }
-
 }
