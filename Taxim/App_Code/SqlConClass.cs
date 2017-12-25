@@ -1480,6 +1480,8 @@ public class SqlConClass : System.Web.Services.WebService
     public string deleteUsersActiveTripRequest(string user)
     {
         string tripID = getActiveTripRequest(user);
+        if (tripID.Equals(""))
+            return "You have no active trip request right now";
         int affected = 0;
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {
