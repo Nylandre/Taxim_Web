@@ -27,6 +27,8 @@
                             <li><a href="AcceptedDrivers.aspx">Accepted Trip Requests</a></li>
                             <li><a href="CustomerTripPage.aspx">My Trips</a></li>
                             <li><a href="FutureTripsRider.aspx">Finished/Unrated Trips</a></li>
+                            <li><a href="AcceptedDrivers.aspx">Accepted Drivers</a></li>
+                            
                             <li><a href="#">Ongoing Trips</a></li>
                             </ul>
                     </li>
@@ -36,6 +38,11 @@
                         <ul class="dropdown-menu">
                             <li><a href="CustomerProfilePage.aspx">Profile Page</a></li>
                             <li><a href="PaymentInfo.aspx">Payment Info</a></li>
+                            <li><a href="PaymentInfo.aspx">Add Credit Card</a></li>
+                            <li><a href="becomeDriverPage.aspx">Become Driver</a></li>
+
+
+
                         </ul>
                     </li>
                    
