@@ -406,6 +406,23 @@ public class SqlConClass : System.Web.Services.WebService
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
+            }
+            using (SqlCommand cmd = new SqlCommand("INSERT INTO Know VALUES (@lang, @user)"))
+
+            {
+                cmd.Parameters.AddWithValue("@lang", language);
+                cmd.Parameters.AddWithValue("@user", e_mail);
+                cmd.Connection = con;
+                con.Open();
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch(Exception E)
+                {
+
+                }
+                con.Close();
                 return true;
             }
         }
@@ -435,6 +452,23 @@ public class SqlConClass : System.Web.Services.WebService
                 catch (SqlException)
                 {
                     return false;
+                }
+                con.Close();
+            }
+            using (SqlCommand cmd = new SqlCommand("INSERT INTO Know VALUES (@lang, @user)"))
+
+            {
+                cmd.Parameters.AddWithValue("@lang", language);
+                cmd.Parameters.AddWithValue("@user", e_mail);
+                cmd.Connection = con;
+                con.Open();
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception E)
+                {
+
                 }
                 con.Close();
                 return true;
@@ -1011,7 +1045,7 @@ public class SqlConClass : System.Web.Services.WebService
         {
             cmd.Parameters.AddWithValue("@pT", SqlDbType.Char).Value = paymentMethod.ToCharArray()[1];
             cmd.Parameters.AddWithValue("@cD", SqlDbType.Bit).Value = choose;
-            cmd.Parameters.AddWithValue("@sD", SqlDbType.DateTime).Value = DateTime.Now.AddMinutes(minuteOffset);
+            cmd.Parameters.AddWithValue("@sD", SqlDbType.DateTime).Value = DateTime.Now.AddSeconds(20+minuteOffset*60);
             cmd.Parameters.AddWithValue("@rID", email);
             cmd.Connection = con;
             cmd.ExecuteNonQuery();
@@ -1108,11 +1142,8 @@ public class SqlConClass : System.Web.Services.WebService
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.CommandText = "getNearbyTrips";
-            //dummy email. change it to session variable
-            cmd.Parameters.Add("@emailDriver", SqlDbType.VarChar).Value = mail;
+            SqlCommand cmd = new SqlCommand("getNearbyTrips @emailDriver");
+            cmd.Parameters.AddWithValue("@emailDriver", mail);
 
             cmd.Connection = con;
             try
@@ -1441,7 +1472,7 @@ public class SqlConClass : System.Web.Services.WebService
                 cmd.Connection = con;
                 SqlDataReader dr = cmd.ExecuteReader();
                 dr.Read();
-                t= dr.GetString(0);
+                t = dr.GetInt32(0)+ "";
                 dr.Close();
             }
             con.Close();
@@ -1487,6 +1518,8 @@ public class SqlConClass : System.Web.Services.WebService
     public string deleteUsersActiveTripRequest(string user)
     {
         string tripID = getActiveTripRequest(user);
+        if (tripID.Equals(""))
+            return "You have no active trip request right now";
         int affected = 0;
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {

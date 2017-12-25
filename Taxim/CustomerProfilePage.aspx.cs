@@ -24,7 +24,7 @@ public partial class ProfilePage : System.Web.UI.Page
                 first_name.Text = dr["FirstName"].ToString();
                 last_name.Text = dr["LastName"].ToString();
                 language.Text = dr["Language"].ToString();
-                phone_no.Text = dr["Phone_No"].ToString();
+                phone_no.Text = dr["Phone_Number"].ToString();
 
             }
         }
