@@ -40,8 +40,9 @@ public partial class Create_Trip : System.Web.UI.Page
         string[] destinationPoints = TextBox2.Text.Replace("\r", "").Split(new char[]{ '\n'});
         SqlConClass s = new SqlConClass();
         int min = 0;
-        if (!RadioButtonList1.SelectedValue.Equals(RadioButtonList1.Items[0]))
+        if (RadioButtonList1.SelectedIndex == 1)
             min = Int32.Parse(TextBox4.Text);
+        //min += 1;
         Char l = 'M';
         if (DropDownList1.Text.Equals(DropDownList1.Items[1]))
             l = 'Q';
