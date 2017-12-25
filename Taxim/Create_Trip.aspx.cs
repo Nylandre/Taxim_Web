@@ -48,7 +48,7 @@ public partial class Create_Trip : System.Web.UI.Page
         else if (DropDownList1.Text.Equals(DropDownList1.Items[2]))
             l = 'L';
 
-        int val = s.createTrip(
+        string val = s.createTrip(
             DropDownList2.Text,
             CheckBox2.Checked,
             CheckBox1.Checked,
@@ -56,13 +56,10 @@ public partial class Create_Trip : System.Web.UI.Page
             l,
             TextBox3.Text,
             TextBox1.Text,
-            destinationPoints
+            destinationPoints,
+            Session["E_Mail"].ToString()
             );
-        if (val > 0)
-            Label5.Text = "Maximum estimated price is: " + val;
-        else if (val == -1)
-            Label5.Text = "düzgün girin şu locationları aq";
-        else if (val == -2)
-            Label5.Text = "You can't create a new trip since you already have an active request OR you are already in a trip";
+        Label5.Text = val;
+        
     }
 }
