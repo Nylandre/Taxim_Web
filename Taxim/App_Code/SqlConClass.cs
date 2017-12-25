@@ -149,7 +149,7 @@ public class SqlConClass : System.Web.Services.WebService
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {
-            using (SqlCommand cmd = new SqlCommand("select Merged_Trip.Merged_Trip_ID, Start_Time, End_Time,Plate_Number from Merged_Trip inner join Passenger on  Passenger.Merged_Trip_ID = Merged_Trip.Merged_Trip_ID where Passenger.E_Mail = 'AnarrAmon271@vahiymail.com' and Passenger.rating is NOT NULL"))
+            using (SqlCommand cmd = new SqlCommand("select Merged_Trip.Merged_Trip_ID, Start_Time, End_Time,Plate_Number from Merged_Trip inner join Passenger on  Passenger.Merged_Trip_ID = Merged_Trip.Merged_Trip_ID where Passenger.E_Mail = @email and Passenger.rating is NOT NULL"))
             {
                 cmd.Parameters.AddWithValue("@email", email);
 
@@ -426,9 +426,16 @@ public class SqlConClass : System.Web.Services.WebService
                 cmd.Parameters.AddWithValue("@loc", loc);
 
 
-                cmd.Connection = con;
-                con.Open();
-                cmd.ExecuteNonQuery();
+                try
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SqlException)
+                {
+                    return false;
+                }
                 con.Close();
                 return true;
             }
