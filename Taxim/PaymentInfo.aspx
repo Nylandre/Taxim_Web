@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="PaymentInfo.aspx.cs" Inherits="PaymentInfo" %>
 
-<!DOCTYPE html>
+<<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -10,12 +10,12 @@
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="js/login_page.js"></script>
     <link href="css/login_page_style.css" rel="stylesheet" />
-
-    <title></title>
+    <title>Home Page</title>
 </head>
-<body>
-    <form id="form1" runat="server">
-
+<body style="height: 525px">
+    <form id="form2" runat="server">
+        <div>
+             <%--Navbar header --%>
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -28,7 +28,6 @@
                             <li><a href="AcceptedDrivers.aspx">Accepted Trip Requests</a></li>
                             <li><a href="CustomerTripPage.aspx">My Trips</a></li>
                             <li><a href="FutureTripsRider.aspx">Finished/Unrated Trips</a></li>
-                            <li><a href="AcceptedDrivers.aspx">Accepted Drivers</a></li>
                            
                             </ul>
                     </li>
@@ -38,10 +37,6 @@
                         <ul class="dropdown-menu">
                             <li><a href="CustomerProfilePage.aspx">Profile Page</a></li>
                             <li><a href="PaymentInfo.aspx">Payment Info</a></li>
-                            <li><a href="AddCreditCard.aspx">Add Credit Card</a></li>
-
-
-
                         </ul>
                     </li>
                    
@@ -52,7 +47,6 @@
                 </ul>
             </div>
         </nav>
-
 
     <div>
     
