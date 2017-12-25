@@ -23,6 +23,10 @@ public partial class SignIn : System.Web.UI.Page
         foreach (DataRow dr in dt.Rows)
         {
             Session["E_Mail"] = dr["E_Mail"].ToString();
+            if (Session["E_Mail"].ToString().Length ==17 )
+            {
+                Response.Redirect("CustServiceHome.aspx");
+            }
             Session["User_Type"] = "customer";
             Response.Redirect("create_trip.aspx");
         }
