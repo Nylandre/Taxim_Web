@@ -15,6 +15,9 @@ public partial class Home : System.Web.UI.Page
             Response.Redirect("DriverHome.aspx");
         if (Session["E_Mail"] != null)
             Response.Write("Welcome "+Session["E_Mail"]);
+        if (Session["E_Mail"].ToString() == "CustomerService")
+            Response.Redirect("CustServiceHome.aspx");
+                
 
        
     }
