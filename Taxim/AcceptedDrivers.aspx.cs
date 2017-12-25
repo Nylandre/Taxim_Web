@@ -12,13 +12,18 @@ public partial class AcceptedDrivers: System.Web.UI.Page
         SqlConClass so = new SqlConClass();
         GridView1.DataSource = so.showAcceptedDrivers(Session["E_Mail"].ToString());
         GridView1.DataBind();
+        GridView1.RowCommand += acceptRowCommand;
     }
 
-    protected void mergeTrip(object sender, EventArgs e)
+    protected void acceptRowCommand(Object sender, GridViewCommandEventArgs e)
     {
-        Response.Redirect("google.com");
-        SqlConClass sq = new SqlConClass();
-        sq.chooseDriver();
-        //buraya doğru parametreleri verin, driver id ile trip id
+        if (e.CommandName == "mergeTrip")
+        {
+            int index = Convert.ToInt32(e.CommandArgument);
+            SqlConClass sq = new SqlConClass();
+            string tripID = sq.getActiveTripRequest(Session["E_Mail"].ToString());
+            sq.chooseDriver(GridView1.Rows[index].Cells[2].Text,tripID);
+            //buraya doğru parametreleri verin, driver id ile trip id
+        }
     }
 }

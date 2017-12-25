@@ -1383,7 +1383,28 @@ public class SqlConClass : System.Web.Services.WebService
             con.Close();
         }
     }
-
+    public string getActiveTripRequest(string email)
+    {
+        string t = "";   
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            con.Open();
+            using (SqlCommand cmd = new SqlCommand(
+                "SELECT trip_id FROM [activeTripRequests] WHERE requesterID = @email"))
+            {
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Connection = con;
+                SqlDataReader dr = cmd.ExecuteReader();
+                dr.Read();
+                t= dr.GetString(0);
+                dr.Close();
+            }
+            con.Close();
+        }
+        if (t.Equals(""))
+            throw new Exception();
+        return t;
+    }
     private static void createNewMergedTrip(string driver, string requestedTrip, List<int> requestedRouteIDS, SqlConnection con)
     {
         string plate;
@@ -1419,3 +1440,5 @@ public class SqlConClass : System.Web.Services.WebService
         cmd.ExecuteNonQuery();
     }
 }
+
+
