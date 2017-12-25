@@ -521,6 +521,41 @@ public class SqlConClass : System.Web.Services.WebService
             }
         }
     }
+
+    [System.Web.Services.WebMethod(BufferResponse = true)]
+    public bool updateMergedTripStartDate(string email)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("UpdateMergeTripStart @email"))
+            {
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Connection = con;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+                return true;
+            }
+        }
+    }
+
+    [System.Web.Services.WebMethod(BufferResponse = true)]
+    public bool updateMergedTripEndDate(string email)
+    {
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            using (SqlCommand cmd = new SqlCommand("UpdateMergeTripEnd @email"))
+            {
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Connection = con;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+                return true;
+            }
+        }
+    }
+
     [System.Web.Services.WebMethod(BufferResponse = true)]
     public bool addCarToDriver(string model_name, string plate_number, string color, string driver_id)
     {

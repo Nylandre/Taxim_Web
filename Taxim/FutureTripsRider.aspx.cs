@@ -26,7 +26,7 @@ GridViewCommandEventArgs e)
             // Retrieve the row that contains the button 
             // from the Rows collection.
             GridViewRow row = GridView1.Rows[index];
-
+            so.updateMergedTripEndDate(Session["E_Mail"].ToString());
             int mId = Int32.Parse(row.Cells[1].Text);
             Session["RatedMTID"] = mId;
             Response.Redirect("RateDriver.aspx");
