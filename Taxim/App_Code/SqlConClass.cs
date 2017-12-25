@@ -11,7 +11,6 @@ using System.Collections;
 /// </summary>
 public class SqlConClass : System.Web.Services.WebService
 {
-
     public DataTable FindMostBanal()
     {
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
@@ -414,6 +413,7 @@ public class SqlConClass : System.Web.Services.WebService
     //Editing the driver data
     public bool updateDriverData(string e_mail, string firstname, string lastname, string language, string phone_no,int loc)
     {
+        
         using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
         {
             using (SqlCommand cmd = new SqlCommand("sp_UpdateDriverInfo @firstname,@lastname,@language,@phone_no,@e_mail,@loc"))
@@ -425,10 +425,16 @@ public class SqlConClass : System.Web.Services.WebService
                 cmd.Parameters.AddWithValue("@language", (language == null || language.Equals("")) ? Convert.DBNull : language);
                 cmd.Parameters.AddWithValue("@loc", loc);
 
-
-                cmd.Connection = con;
-                con.Open();
-                cmd.ExecuteNonQuery();
+                try
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SqlException)
+                {
+                    return false;
+                }
                 con.Close();
                 return true;
             }
