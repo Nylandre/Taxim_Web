@@ -1,0 +1,64 @@
+body {
+    /*background: url("../imgs/notebook_background.jpg") no-repeat center center fixed;*/
+    background: url("../imgs/the_background.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+/*#person_id{
+    display:none;
+}*/
+#add_admin {
+    margin-top: 2%;
+    /*margin-left: 22%;*/
+    margin-bottom: 2%;
+} 
+.navbar {
+    background-color: rgba(0,0,0,0.9);
+    background: rgba(0,0,0,0.9);
+    border-color: rgba(0,0,0,0.9);
+}
+#add_options{
+	margin-left:23%;
+}
+#People_Grid_View{
+    margin-left:1%;
+}
+#add_people {
+    margin-top: 2%;
+    /*margin-left: 22%;*/
+    margin-bottom: 2%;
+}
+#people_table{
+    margin-top:2%;
+    /*margin-left:22%;*/ 
+}
+.table_button {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+#ctl01 #add_company {
+    margin-top: 2%;
+    padding-left: 0px;
+    margin-bottom: 2%;
+}
+#ctl01 #company_table {
+    margin-top: 2%;
+    margin-left: 1%;
+}
+#ct101{
+    padding-left:0px;
+}
+#ctl01 #add_appointment {
+    margin-top: 2%;
+    margin-left: 22%;
+}
+#appointment_table{
+    margin-top:2%;
+    margin-left:22%;
+}
+
+
+
