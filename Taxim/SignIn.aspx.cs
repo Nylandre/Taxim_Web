@@ -28,7 +28,7 @@ public partial class SignIn : System.Web.UI.Page
                 Response.Redirect("CustServiceHome.aspx");
             }
             Session["User_Type"] = "customer";
-            Response.Redirect("Home.aspx");
+            Response.Redirect("create_trip.aspx");
         }
     }
 

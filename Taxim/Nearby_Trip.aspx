@@ -12,9 +12,12 @@
         </div>
         <asp:GridView ID="GridView1" runat="server">
         </asp:GridView>
-        <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
-        <asp:Label ID="Label2" runat="server" Text="Label"></asp:Label>
+        <asp:Label ID="Label1" runat="server" Text=""></asp:Label>
+        &nbsp;<div>
+        <asp:Label ID="Label2" runat="server" Text=""></asp:Label>
+        </div>
     </form>
-	<input action="action" onclick="window.history.go(-1); return false;" type="button" value="Back" />
+	<p>
+	<input action="action" onclick="window.history.go(-1); return false;" type="button" value="Back" /></p>
 </body>
 </html>
