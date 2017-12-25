@@ -32,7 +32,7 @@ public partial class Default2 : System.Web.UI.Page
             if (sq.checkRouteMatches(Session["E_Mail"].ToString(),
                 GridView1.Rows[index].Cells[1].Text))
             {
-                sq.driverAccepts(Session["E_Mail"].ToString(),
+                Label1.Text = sq.driverAccepts(Session["E_Mail"].ToString(),
                     GridView1.Rows[index].Cells[1].Text);
                 Page_Load(sender, e);
             }
