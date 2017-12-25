@@ -7,7 +7,6 @@ using System.Web.UI.WebControls;
 
 public partial class Default2 : System.Web.UI.Page
 {
-    Boolean createdGrid = false;
     protected void Page_Load(object sender, EventArgs e)
     {
         SqlConClass sq = new SqlConClass();
