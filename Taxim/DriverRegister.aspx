@@ -41,5 +41,6 @@
 			<asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Register" />
 		</p>
     </form>
+	<input action="action" onclick="window.history.go(-1); return false;" type="button" value="Back" />
         </body>
 </html>

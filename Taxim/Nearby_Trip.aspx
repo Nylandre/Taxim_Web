@@ -15,5 +15,6 @@
         <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
         <asp:Label ID="Label2" runat="server" Text="Label"></asp:Label>
     </form>
+	<input action="action" onclick="window.history.go(-1); return false;" type="button" value="Back" />
 </body>
 </html>
