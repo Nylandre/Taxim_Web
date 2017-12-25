@@ -59,8 +59,10 @@ public partial class Create_Trip : System.Web.UI.Page
             destinationPoints
             );
         if (val > 0)
-            Label5.Text =  "Maximum estimated price is: " + val;
-        else if(val == -1)
+            Label5.Text = "Maximum estimated price is: " + val;
+        else if (val == -1)
             Label5.Text = "düzgün girin şu locationları aq";
+        else if (val == -2)
+            Label5.Text = "You can't create a new trip since you already have an active request OR you are already in a trip";
     }
 }

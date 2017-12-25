@@ -26,4 +26,13 @@ public partial class AcceptedDrivers: System.Web.UI.Page
             //buraya doğru parametreleri verin, driver id ile trip id
         }
     }
+
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        
+        SqlConClass sq = new SqlConClass();
+        
+        Label2.Text = sq.deleteUsersActiveTripRequest(Session["E_Mail"].ToString());
+        Page_Load(sender, e);
+    }
 }

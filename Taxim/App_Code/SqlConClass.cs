@@ -942,6 +942,17 @@ public class SqlConClass : System.Web.Services.WebService
             con.Open();
             int[] locationIDS = new int[destinations.Length + 1];
             int totalDistance = 0;
+            using (SqlCommand cmd = new SqlCommand("SELECT * FROM Trip " +
+                "WHERE requester_id = @email AND Ride_End_Time is NULL"))
+            {
+                cmd.Parameters.AddWithValue("@email", Session["E_Mail"].ToString());
+                cmd.Connection = con;
+                if (!cmd.ExecuteReader().HasRows)
+                {
+                    con.Close();
+                    return -2;
+                }
+            }
             try
             {
                 using (SqlCommand cmd = new SqlCommand("getLocationIDs @startP, @endP"))
@@ -976,6 +987,7 @@ public class SqlConClass : System.Web.Services.WebService
             }
             catch(System.InvalidOperationException E)
             {
+                con.Close();
                 return -1;
                 //location error
             }
@@ -1438,6 +1450,26 @@ public class SqlConClass : System.Web.Services.WebService
         cmd.CommandText += " COMMIT ";
         cmd.Connection = con;
         cmd.ExecuteNonQuery();
+    }
+    public string deleteUsersActiveTripRequest(string user)
+    {
+        string tripID = getActiveTripRequest(user);
+        int affected = 0;
+        using (SqlConnection con = new SqlConnection("Data Source=hamstertainment.com;Initial Catalog=Taxim;User Id=taxim_dbo ;Password=tX_2018!"))
+        {
+            con.Open();
+            using (SqlCommand cmd = new SqlCommand(
+                "DELETE FROM Trip WHERE trip_id = @tripID "))
+            {
+                cmd.Parameters.AddWithValue("@tripID", tripID);
+                cmd.Connection = con;
+                affected = cmd.ExecuteNonQuery();
+            }
+            con.Close();
+        }
+        if (affected == 0)
+            return "You have no active trip request right now";
+        else return "Successfully deleted the trip with ID: " + tripID;
     }
 }
 
