@@ -1253,7 +1253,7 @@ public class SqlConClass : System.Web.Services.WebService
         return true;
     }
 
-    public void driverAccepts(string driver, string requestedTrip)
+    public string driverAccepts(string driver, string requestedTrip)
     {
         List<int> requestedRouteCoordinatesX = new List<int>();
         List<int> requestedRouteCoordinatesY = new List<int>();
@@ -1286,15 +1286,18 @@ public class SqlConClass : System.Web.Services.WebService
                 //if currently car is empty
                 if (currentRouteCoordinatesX.Count == 0)
                 {
-                    createPossibleNewMergedTrip(driver, requestedTrip, requestedRouteIDS);
+                    Boolean assigned = createPossibleNewMergedTrip(driver, requestedTrip, requestedRouteIDS);
                     con.Close();
-                    return;
+                    if (assigned)
+                        return "you are admitted to the trip";
+                    else return "you are waiting for rider's confirmaiton";
                 }
             }
 
             mergeCurrentAndRequested(requestedTrip, requestedRouteCoordinatesX, requestedRouteCoordinatesY, currentRouteCoordinatesX, currentRouteCoordinatesY, requestedRouteIDS, currentRouteIDS, merged_trip_id, driverLoc, con);
             con.Close();
         }
+        return "Requested trip is merged into your current route";
     }
 
     private static void getRequestedTripValues(string requestedTrip, List<int> requestedRouteCoordinatesX, List<int> requestedRouteCoordinatesY, List<int> requestedRouteIDS, SqlConnection con)
@@ -1424,7 +1427,7 @@ public class SqlConClass : System.Web.Services.WebService
         return merged;
     }
 
-    private void createPossibleNewMergedTrip(string driver, string requestedTrip, List<int> requestedRouteIDS)
+    private Boolean createPossibleNewMergedTrip(string driver, string requestedTrip, List<int> requestedRouteIDS)
     {
         //car is empty, either user picked auto choose driver or not
         Boolean auto_choose;
@@ -1451,12 +1454,16 @@ public class SqlConClass : System.Web.Services.WebService
                     cmd.Connection = con;
                     cmd.ExecuteNonQuery();
                 }
+                con.Close();
+                return false;
             }
             else
             {
                 createNewMergedTrip(driver, requestedTrip, requestedRouteIDS, con);
+                con.Close();
+                return true;
             }
-            con.Close();
+            
         }
     }
     public string getActiveTripRequest(string email)
