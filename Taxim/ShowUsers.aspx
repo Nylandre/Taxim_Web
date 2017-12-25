@@ -19,5 +19,6 @@
 		</asp:GridView>
 		<asp:SqlDataSource ID="sql" runat="server" ConnectionString="<%$ ConnectionStrings:TaximConnectionString %>" SelectCommand="SELECT * FROM [Driver]"></asp:SqlDataSource>
     </form>
+	<input action="action" onclick="window.history.go(-1); return false;" type="button" value="Back" />
 </body>
 </html>
