@@ -1392,8 +1392,8 @@ public class SqlConClass : System.Web.Services.WebService
             {
                 currentX = currentRouteCoordinatesX[iterC];
                 currentY = currentRouteCoordinatesY[iterC];
-                iterC++; iterR++;
                 merged.Add(currentRouteIDS[iterC]);
+                iterC++; iterR++;
                 continue;
             }
 
