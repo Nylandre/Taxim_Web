@@ -1,0 +1,47 @@
+body { 
+  background: url("../imgs/notebook_background.jpg") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.navbar {
+    background-color: rgba(0,0,0,0.9);
+    background: rgba(0,0,0,0.9);
+    border-color: rgba(0,0,0,0.9);
+}
+#edit_options{
+	margin-left:23%;
+}
+.navbar li {
+    color: #000;
+} 
+#edit_people{
+    margin-top:2%;
+    margin-left:22%;
+}
+#people_edit_table{
+    margin-top:2%;
+    margin-left:22%;
+}
+
+#edit_company{
+    margin-top:2%;
+    margin-left:22%;
+}
+
+#company_edit_table{
+    margin-top:2%;
+    margin-left:22%;
+}
+
+#edit_appointment{
+    margin-top:2%;
+    margin-left:22%;
+}
+#appointment_edit_table{
+    margin-top:2%;
+    margin-left:22%;
+}
+

@@ -49,6 +49,7 @@
             <asp:Button ID="Button1" runat="server" Text="Call the Taxi!" OnClick="Button1_Click" />
         </p>
         <asp:Label ID="Label5" runat="server"></asp:Label>
+		<br /><input action="action" onclick="window.history.go(-1); return false;" type="button" value="Back" />
     </form>
     </body>
 </html>
